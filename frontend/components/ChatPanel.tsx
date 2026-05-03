@@ -14,6 +14,11 @@ interface ChatPanelProps {
   onOperatorSuggestion?: (operators: any[]) => void
 }
 
+const demoPrompts = [
+  'Plan a 7-day luxury adventure trek in Nepal for a travel influencer with 250K followers. We want strong content moments, local culture, and operator support.',
+  'I want boutique 4-star hotels if possible, but be honest if the mountains can only support 3.5-star or premium teahouses.',
+]
+
 export default function ChatPanel({
   itineraryId,
   currentItinerary,
@@ -34,7 +39,7 @@ export default function ChatPanel({
       initialized.current = true
       setMessages([{
         role: 'assistant',
-        content: "Hey! I'm your WanderKit AI assistant. Tell me where in the world you want to go and what kind of experience you're after — I'll build your perfect itinerary. ✦"
+        content: "Hey! I'm your WanderKit AI assistant. Tell me where in the world you want to go and what kind of experience you're after. I'll build the itinerary, flag real operator constraints, and prepare it for negotiation."
       }])
     }
   }, [])
@@ -139,7 +144,7 @@ export default function ChatPanel({
         </div>
         <div>
           <div className="text-sm font-semibold text-notion-text">AI Travel Assistant</div>
-          <div className="text-xs text-notion-muted">Powered by Claude</div>
+          <div className="text-xs text-notion-muted">Scripted demo flow ready</div>
         </div>
         <div className="ml-auto">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
@@ -148,6 +153,24 @@ export default function ChatPanel({
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+        {messages.length === 1 && (
+          <div className="rounded-xl border border-brand-200 bg-brand-50 p-3 space-y-2">
+            <div className="text-xs font-semibold text-brand-700">Demo brief</div>
+            {demoPrompts.map(prompt => (
+              <button
+                key={prompt}
+                onClick={() => {
+                  setInput(prompt)
+                  inputRef.current?.focus()
+                }}
+                className="w-full text-left text-xs leading-relaxed rounded-lg bg-white border border-brand-100 px-3 py-2 text-notion-secondary hover:border-brand-300 hover:text-notion-text transition-colors"
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        )}
+
         {messages.map((msg, i) => (
           <div key={i} className={`flex gap-2.5 message-bubble ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
             <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${

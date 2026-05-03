@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useRef } from 'react'
+import { Suspense, useEffect, useState, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { getNegotiations, getOperators, getItineraries } from '@/lib/api'
 import {
@@ -33,7 +33,7 @@ const statusConfig: Record<string, { label: string; color: string; icon: any }> 
   failed: { label: 'No Deal', color: 'text-red-600 bg-red-50', icon: XCircle },
 }
 
-export default function NegotiationsPage() {
+function NegotiationsContent() {
   const searchParams = useSearchParams()
   const [negotiations, setNegotiations] = useState<Negotiation[]>([])
   const [selected, setSelected] = useState<Negotiation | null>(null)
@@ -370,5 +370,13 @@ export default function NegotiationsPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function NegotiationsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-sm text-notion-muted">Loading negotiations...</div>}>
+      <NegotiationsContent />
+    </Suspense>
   )
 }

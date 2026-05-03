@@ -1,6 +1,13 @@
 import json
 import os
+import asyncio
 import anthropic
+from demo_content import (
+    DEMO_CHAT_REPLY,
+    DEMO_OPERATOR_REPLY,
+    copy_demo_itinerary,
+    get_demo_operator_matches,
+)
 from tools.mock_data import search_operators
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
@@ -91,8 +98,48 @@ def process_tool_call(tool_name: str, tool_input: dict):
         return {"operators": operators[:2]}
     return {"error": "Unknown tool"}
 
+def use_live_ai():
+    return os.getenv("WANDERKIT_LIVE_AI") == "1" and bool(os.getenv("ANTHROPIC_API_KEY"))
+
+async def stream_scripted_itinerary_chat(messages: list, current_itinerary: dict = None):
+    """Deterministic demo flow for the final presentation."""
+    for char in DEMO_CHAT_REPLY:
+        yield f"data: {json.dumps({'type': 'text_delta', 'text': char})}\n\n"
+        await asyncio.sleep(0.003)
+
+    itinerary = copy_demo_itinerary()
+    itinerary["status"] = "draft"
+
+    yield f"data: {json.dumps({'type': 'tool_use', 'name': 'update_itinerary', 'input': itinerary})}\n\n"
+    await asyncio.sleep(0.25)
+    yield f"data: {json.dumps({'type': 'tool_result', 'name': 'update_itinerary', 'result': {'success': True, 'itinerary': itinerary}})}\n\n"
+
+    match_input = {
+        "destination": "Nepal",
+        "style": "adventure",
+        "budget_per_day": 300,
+        "hotel_rating": 4.0,
+    }
+    operators = get_demo_operator_matches()
+    await asyncio.sleep(0.25)
+    yield f"data: {json.dumps({'type': 'tool_use', 'name': 'find_matching_operator', 'input': match_input})}\n\n"
+    await asyncio.sleep(0.25)
+    yield f"data: {json.dumps({'type': 'tool_result', 'name': 'find_matching_operator', 'result': {'operators': operators}})}\n\n"
+
+    yield f"data: {json.dumps({'type': 'text_delta', 'text': '\\n\\n'})}\n\n"
+    for char in DEMO_OPERATOR_REPLY:
+        yield f"data: {json.dumps({'type': 'text_delta', 'text': char})}\n\n"
+        await asyncio.sleep(0.003)
+
+    yield f"data: {json.dumps({'type': 'done', 'messages': messages})}\n\n"
+
 async def stream_itinerary_chat(messages: list, current_itinerary: dict = None):
     """Yields SSE-formatted events for the itinerary chat stream."""
+    if not use_live_ai():
+        async for event in stream_scripted_itinerary_chat(messages, current_itinerary):
+            yield event
+        return
+
     api_messages = []
     for m in messages:
         api_messages.append({"role": m["role"], "content": m["content"]})

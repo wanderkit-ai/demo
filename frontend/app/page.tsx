@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { getItineraries, getNegotiations } from '@/lib/api'
+import { getItineraries, getNegotiations, resetDemo } from '@/lib/api'
 import {
   Plus, Map, MessageSquare, Globe,
   TrendingUp, ArrowRight, Mountain, Compass, Star
@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [itineraries, setItineraries] = useState<any[]>([])
   const [negotiations, setNegotiations] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [resetting, setResetting] = useState(false)
 
   useEffect(() => {
     Promise.all([getItineraries(), getNegotiations()])
@@ -21,12 +22,48 @@ export default function Dashboard() {
   const published = itineraries.filter(i => i.status === 'published').length
   const agreed = negotiations.filter(n => n.status === 'agreed').length
 
+  const handleResetDemo = async () => {
+    setResetting(true)
+    await resetDemo()
+    const [its, negs] = await Promise.all([getItineraries(), getNegotiations()])
+    setItineraries(its)
+    setNegotiations(negs)
+    setResetting(false)
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-8 py-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-warm-text mb-0.5">Welcome back</h1>
         <p className="text-sm text-warm-secondary">Your adventure travel command center.</p>
+      </div>
+
+      <div className="mb-8 rounded-xl border border-brand-200 bg-white p-5 shadow-card">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="font-semibold text-warm-text mb-1">Final demo flow</h2>
+            <p className="text-sm text-warm-secondary max-w-2xl">
+              Create a Nepal influencer itinerary, show the 4-star hotel constraint, match Himalaya Quest,
+              publish the brief, negotiate from $150/day to $120/day, generate the checklist, then send confirmation.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={handleResetDemo}
+              disabled={resetting}
+              className="text-sm border border-warm-border text-warm-secondary px-3 py-2 rounded-lg hover:border-brand-300 hover:text-warm-text transition-colors disabled:opacity-50"
+            >
+              {resetting ? 'Resetting...' : 'Reset demo'}
+            </button>
+            <Link
+              href="/itinerary/new"
+              className="inline-flex items-center gap-2 bg-brand-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors"
+            >
+              <Plus className="w-4 h-4" /> Start demo
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* Stats */}

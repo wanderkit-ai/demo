@@ -19,6 +19,7 @@ from agents.itinerary_agent import stream_itinerary_chat
 from agents.operator_agent import match_operators
 from agents.negotiation_agent import run_negotiation
 from agents.checklist_agent import generate_checklist
+from demo_content import seed_demo_data
 
 app = FastAPI(title="WanderKit API")
 
@@ -29,6 +30,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+seed_demo_data(store)
+
+
+@app.post("/api/demo/reset")
+def reset_demo():
+    store.itineraries.clear()
+    store.negotiations.clear()
+    store.checklists.clear()
+    store.conversations.clear()
+    seed_demo_data(store)
+    return {"success": True}
 
 
 # ── Itineraries ─────────────────────────────────────────────────────────────

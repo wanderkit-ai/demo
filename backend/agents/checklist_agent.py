@@ -2,6 +2,7 @@ import json
 import os
 import uuid
 import anthropic
+from demo_content import DEMO_CHECKLIST_ITEMS
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
@@ -21,7 +22,24 @@ Organize items into categories:
 For each item include: deadline (X weeks before departure), brief notes, and priority (high/medium/low).
 Return as a JSON array of checklist items."""
 
+def use_live_ai():
+    return os.getenv("WANDERKIT_LIVE_AI") == "1" and bool(os.getenv("ANTHROPIC_API_KEY"))
+
 def generate_checklist(itinerary: dict, deal: dict = None) -> list:
+    if not use_live_ai():
+        items = []
+        for category, task, deadline, notes, priority in DEMO_CHECKLIST_ITEMS:
+            items.append({
+                "id": str(uuid.uuid4()),
+                "category": category,
+                "task": task,
+                "done": False,
+                "deadline": deadline,
+                "notes": notes,
+                "priority": priority
+            })
+        return items
+
     context = f"""
 Itinerary: {itinerary.get('title')}
 Destination: {itinerary.get('destination')}

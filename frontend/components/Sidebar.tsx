@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutGrid, Mountain, MessageSquare, CheckSquare, Map, BarChart2 } from 'lucide-react'
+import { LayoutGrid, Mountain, MessageSquare, CheckSquare, Map } from 'lucide-react'
 import clsx from 'clsx'
 
 export default function Sidebar() {
@@ -33,7 +33,6 @@ export default function Sidebar() {
         </div>
         <SideItem href="/" icon={LayoutGrid} label="Dashboard" active={path === '/'} />
         <SideItem href="/itinerary/new" icon={Map} label="New Itinerary" active={path === '/itinerary/new'} />
-        <SideItem href="/reports" icon={BarChart2} label="Reports" active={path.startsWith('/reports')} />
       </div>
     </aside>
   )

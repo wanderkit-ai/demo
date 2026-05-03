@@ -4,6 +4,7 @@ import uuid
 import asyncio
 from datetime import datetime
 import anthropic
+from demo_content import DEMO_DEAL, DEMO_NEGOTIATION_MESSAGES, make_message
 from tools.mock_data import get_operator_by_id
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
@@ -63,11 +64,30 @@ TOOLS = [
     }
 ]
 
+def use_live_ai():
+    return os.getenv("WANDERKIT_LIVE_AI") == "1" and bool(os.getenv("ANTHROPIC_API_KEY"))
+
 async def run_negotiation(itinerary: dict, operator_id: str):
     """Runs the full negotiation and yields SSE events."""
     operator = get_operator_by_id(operator_id)
     if not operator:
         yield f"data: {json.dumps({'type': 'error', 'message': 'Operator not found'})}\n\n"
+        return
+
+    if not use_live_ai():
+        yield f"data: {json.dumps({'type': 'agent_thinking', 'text': 'Preparing itinerary brief and opening Telegram thread...'})}\n\n"
+        await asyncio.sleep(0.4)
+
+        for sender, text in DEMO_NEGOTIATION_MESSAGES:
+            msg = make_message(sender, text)
+            yield f"data: {json.dumps({'type': 'message', 'message': msg})}\n\n"
+            await asyncio.sleep(0.75)
+
+        deal = dict(DEMO_DEAL)
+        deal["operator_name"] = operator["name"]
+        deal["operator_id"] = operator_id
+        yield f"data: {json.dumps({'type': 'deal_reached', 'deal': deal})}\n\n"
+        yield f"data: {json.dumps({'type': 'done', 'deal': deal})}\n\n"
         return
 
     script = operator.get("negotiation_script", {})
