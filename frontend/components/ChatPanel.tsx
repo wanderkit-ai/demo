@@ -1,6 +1,13 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import { Send, Bot, User, Loader2, Sparkles, MapPin } from 'lucide-react'
+import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react'
+
+const thinkingKeyframes = `
+@keyframes thinking-bounce {
+  0%, 60%, 100% { transform: translateY(0px); opacity: 0.35; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+`
 
 interface Message {
   role: 'user' | 'assistant'
@@ -193,11 +200,33 @@ export default function ChatPanel({
           </div>
         ))}
 
-        {/* Tool activity indicator */}
-        {toolActivity && (
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-brand-50 border border-brand-100">
-            <Loader2 className="w-3.5 h-3.5 text-brand-600 animate-spin shrink-0" />
-            <span className="text-xs text-brand-700 font-medium">{toolActivity}</span>
+        {/* Thinking / tool activity */}
+        {loading && !streamingText && (
+          <div className="flex gap-2.5">
+            <style>{thinkingKeyframes}</style>
+            <div className={`w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center shrink-0 mt-0.5 transition-all ${toolActivity ? 'ring-2 ring-brand-300 ring-offset-1' : ''}`}>
+              <Bot className="w-3.5 h-3.5 text-brand-600" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2 px-3.5 py-3 rounded-xl rounded-tl-sm bg-notion-hover w-fit">
+                {[0, 1, 2].map(i => (
+                  <div
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-brand-400"
+                    style={{
+                      animation: 'thinking-bounce 1.2s ease-in-out infinite',
+                      animationDelay: `${i * 0.18}s`,
+                    }}
+                  />
+                ))}
+              </div>
+              {toolActivity && (
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-brand-50 border border-brand-100 w-fit">
+                  <Loader2 className="w-3 h-3 text-brand-500 animate-spin shrink-0" />
+                  <span className="text-[11px] text-brand-600 font-medium">{toolActivity}</span>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -211,22 +240,7 @@ export default function ChatPanel({
               {streamingText.split('\n').map((line, j) => (
                 <span key={j}>{line}{j < streamingText.split('\n').length - 1 && <br />}</span>
               ))}
-              <span className="inline-block w-0.5 h-4 bg-brand-600 ml-0.5 animate-pulse align-middle" />
-            </div>
-          </div>
-        )}
-
-        {/* Loading dots */}
-        {loading && !streamingText && !toolActivity && (
-          <div className="flex gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center shrink-0 mt-0.5">
-              <Bot className="w-3.5 h-3.5 text-brand-600" />
-            </div>
-            <div className="flex items-center gap-1 px-3.5 py-3 rounded-xl rounded-tl-sm bg-notion-hover">
-              {[0,1,2].map(i => (
-                <div key={i} className="w-1.5 h-1.5 rounded-full bg-notion-secondary animate-pulse-dot"
-                  style={{ animationDelay: `${i * 0.2}s` }} />
-              ))}
+              <span className="inline-block w-0.5 h-4 bg-brand-500 ml-0.5 animate-pulse align-middle" />
             </div>
           </div>
         )}

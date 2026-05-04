@@ -19,7 +19,10 @@ from agents.itinerary_agent import stream_itinerary_chat
 from agents.operator_agent import match_operators
 from agents.negotiation_agent import run_negotiation
 from agents.checklist_agent import generate_checklist
-from demo_content import seed_demo_data
+from agents.customer_agent import stream_customer_analysis, stream_personalized_negotiation
+from agents.customer_intake_agent import stream_customer_intake
+from demo_content import seed_demo_data, DEMO_ANALYSIS_EVENTS, DEMO_TRAVELER_EMAILS, build_demo_trip_signups
+from models import TripSignupRequest
 
 app = FastAPI(title="Noma API")
 
@@ -40,6 +43,9 @@ def reset_demo():
     store.negotiations.clear()
     store.checklists.clear()
     store.conversations.clear()
+    store.trip_signups.clear()
+    store.trip_analyses.clear()
+    store.trip_negotiations.clear()
     seed_demo_data(store)
     return {"success": True}
 
@@ -256,10 +262,177 @@ def send_email(req: EmailRequest):
     it = store.get_itinerary(req.itinerary_id)
     if not it:
         raise HTTPException(404, "Itinerary not found")
-    # Mock email send
     return {
         "success": True,
         "message": f"Confirmation email sent to {req.user_email}",
         "subject": f"Your Noma Trip: {it.get('title', 'Amazing Journey')}",
         "preview": f"Confirmed: {it.get('duration')} days in {it.get('destination')} — your adventure awaits!"
     }
+
+
+# ── Trip Pipeline ─────────────────────────────────────────────────────────────
+
+@app.post("/api/trips/{itinerary_id}/launch")
+def launch_trip(itinerary_id: str):
+    it = store.get_itinerary(itinerary_id)
+    if not it:
+        raise HTTPException(404, "Itinerary not found")
+    it["trip_launched"] = True
+    store.save_itinerary(it)
+    # Auto-seed demo customers for any newly launched trip (demo mode)
+    if not store.get_trip_signups(itinerary_id):
+        for signup in build_demo_trip_signups(itinerary_id):
+            store.add_trip_signup(itinerary_id, signup)
+    return {"success": True, "itinerary_id": itinerary_id}
+
+
+@app.post("/api/trips/{itinerary_id}/customer-chat")
+async def customer_chat(itinerary_id: str, body: dict):
+    messages = body.get("messages", [])
+
+    async def generate():
+        profile = None
+        async for event in stream_customer_intake(messages):
+            yield event
+            try:
+                data = json.loads(event.replace("data: ", "").strip())
+                if data.get("type") == "profile_saved":
+                    profile = data["profile"]
+            except:
+                pass
+        # Profile is saved when the frontend calls /signup after chat
+    return StreamingResponse(generate(), media_type="text/event-stream")
+
+@app.get("/api/trips/{itinerary_id}")
+def get_trip(itinerary_id: str):
+    it = store.get_itinerary(itinerary_id)
+    if not it:
+        raise HTTPException(404, "Itinerary not found")
+    signups = store.get_trip_signups(itinerary_id)
+    analysis = store.get_trip_analysis(itinerary_id)
+    neg = store.get_trip_negotiation(itinerary_id)
+    return {
+        "itinerary": it,
+        "signup_count": len(signups),
+        "trip_launched": it.get("trip_launched", False),
+        "analysis": analysis,
+        "negotiation": neg,
+    }
+
+@app.post("/api/trips/{itinerary_id}/signup")
+def trip_signup(itinerary_id: str, body: dict):
+    it = store.get_itinerary(itinerary_id)
+    if not it:
+        raise HTTPException(404, "Trip not found")
+    signup = {
+        "id": str(uuid.uuid4()),
+        "name": body.get("name", ""),
+        "email": body.get("email", ""),
+        "experience": body.get("experience", "intermediate"),
+        "interests": body.get("interests", []),
+        "budget_range": body.get("budget_range", ""),
+        "demands": body.get("demands", ""),
+        "chat_summary": body.get("chat_summary", ""),
+        "submitted_at": datetime.now().isoformat(),
+    }
+    store.add_trip_signup(itinerary_id, signup)
+    return {"success": True, "signup": signup}
+
+@app.get("/api/trips/{itinerary_id}/signups")
+def list_trip_signups(itinerary_id: str):
+    return store.get_trip_signups(itinerary_id)
+
+@app.post("/api/trips/{itinerary_id}/analyze")
+async def analyze_signups(itinerary_id: str):
+    it = store.get_itinerary(itinerary_id)
+    if not it:
+        raise HTTPException(404, "Itinerary not found")
+    signups = store.get_trip_signups(itinerary_id)
+
+    async def generate():
+        analysis = {}
+        async for event in stream_customer_analysis(signups, it):
+            yield event
+            try:
+                data = json.loads(event.replace("data: ", "").strip())
+                if data.get("type") == "operator_selected":
+                    analysis = data
+            except:
+                pass
+        if analysis:
+            store.save_trip_analysis(itinerary_id, analysis)
+
+    return StreamingResponse(generate(), media_type="text/event-stream")
+
+@app.post("/api/trips/{itinerary_id}/negotiate")
+async def trip_negotiate(itinerary_id: str):
+    it = store.get_itinerary(itinerary_id)
+    if not it:
+        raise HTTPException(404, "Itinerary not found")
+    signups = store.get_trip_signups(itinerary_id)
+    analysis = store.get_trip_analysis(itinerary_id)
+    operator_id = analysis.get("operator_id", "op_nepal_trek") if analysis else "op_nepal_trek"
+
+    async def generate():
+        all_messages = []
+        deal = None
+        async for event in stream_personalized_negotiation(signups, it, operator_id):
+            yield event
+            try:
+                data = json.loads(event.replace("data: ", "").strip())
+                if data.get("type") == "message":
+                    all_messages.append(data["message"])
+                elif data.get("type") == "deal_reached":
+                    deal = data["deal"]
+            except:
+                pass
+
+        neg = {
+            "itinerary_id": itinerary_id,
+            "operator_id": operator_id,
+            "operator_name": deal.get("operator_name", "Operator") if deal else "Operator",
+            "status": "agreed" if deal else "active",
+            "messages": all_messages,
+            "original_price": 195,
+            "final_price": deal.get("price_per_day") if deal else None,
+            "deal_terms": deal.get("summary") if deal else None,
+            "deal": deal,
+            "created_at": datetime.now().isoformat(),
+        }
+        store.save_trip_negotiation(itinerary_id, neg)
+
+    return StreamingResponse(generate(), media_type="text/event-stream")
+
+@app.post("/api/trips/{itinerary_id}/send-travelers")
+def send_to_travelers(itinerary_id: str):
+    it = store.get_itinerary(itinerary_id)
+    if not it:
+        raise HTTPException(404, "Itinerary not found")
+    signups = store.get_trip_signups(itinerary_id)
+    neg = store.get_trip_negotiation(itinerary_id)
+    deal = neg.get("deal", {}) if neg else {}
+
+    results = []
+    for signup in signups:
+        signup_id = signup.get("id", "")
+        template = DEMO_TRAVELER_EMAILS.get(signup_id)
+        if template:
+            results.append({
+                "name": signup["name"],
+                "email": signup["email"],
+                "subject": template["subject"],
+                "preview": template["preview"],
+                "personalized_note": template["personalized_note"],
+                "sent": True,
+            })
+        else:
+            results.append({
+                "name": signup["name"],
+                "email": signup["email"],
+                "subject": f"Your Nepal Trek is Confirmed, {signup['name'].split()[0]}",
+                "preview": f"Your 7-day Nepal trek is confirmed at ${deal.get('price_per_day', 115)}/day.",
+                "personalized_note": "Full itinerary and operator brief attached.",
+                "sent": True,
+            })
+
+    return {"success": True, "emails_sent": len(results), "results": results}

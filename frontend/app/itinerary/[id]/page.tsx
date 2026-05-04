@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ItineraryBlock from '@/components/ItineraryBlock'
 import OperatorCard from '@/components/OperatorCard'
-import { getItinerary, matchOperators, publishItinerary } from '@/lib/api'
+import { getItinerary, publishItinerary, launchTrip } from '@/lib/api'
 import {
   Globe, Clock, Users, DollarSign, ArrowLeft,
-  Sparkles, AlertCircle, Map, Send, Check
+  AlertCircle, Map, Send, Check,
+  ExternalLink, LayoutDashboard
 } from 'lucide-react'
 
 const styleColors: Record<string, string> = {
@@ -20,16 +21,17 @@ const styleColors: Record<string, string> = {
 export default function ItineraryPage({ params }: { params: { id: string } }) {
   const router = useRouter()
   const [itinerary, setItinerary] = useState<any>(null)
-  const [operators, setOperators] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [loadingOps, setLoadingOps] = useState(false)
   const [publishing, setPublishing] = useState(false)
   const [published, setPublished] = useState(false)
+  const [launching, setLaunching] = useState(false)
+  const [tripLaunched, setTripLaunched] = useState(false)
 
   useEffect(() => {
     getItinerary(params.id)
       .then(data => {
         setItinerary(data)
+        if (data?.trip_launched) setTripLaunched(true)
         setLoading(false)
       })
       .catch(() => setLoading(false))
@@ -44,20 +46,11 @@ export default function ItineraryPage({ params }: { params: { id: string } }) {
     setPublishing(false)
   }
 
-  const findOperators = async () => {
-    if (!itinerary) return
-    setLoadingOps(true)
-    const budgetNum = parseInt((itinerary.budget || '200').replace(/\D/g, '')) || 200
-    const result = await matchOperators({
-      itinerary_id: params.id,
-      destination: itinerary.destination,
-      style: itinerary.style,
-      budget_per_day: budgetNum,
-      hotel_rating: 4,
-      duration: itinerary.duration
-    })
-    setOperators(result.operators || [])
-    setLoadingOps(false)
+  const handleLaunchTrip = async () => {
+    setLaunching(true)
+    await launchTrip(params.id)
+    setTripLaunched(true)
+    setLaunching(false)
   }
 
   if (loading) {
@@ -90,7 +83,7 @@ export default function ItineraryPage({ params }: { params: { id: string } }) {
       </button>
 
       {/* Status + Publish */}
-      <div className="flex items-center gap-3 mb-2">
+      <div className="flex items-center flex-wrap gap-2 mb-2">
         <div className="text-xs text-brand-600 font-semibold uppercase tracking-wider">
           {itinerary.status === 'published' ? '✓ Published' : '· Draft'}
         </div>
@@ -108,6 +101,38 @@ export default function ItineraryPage({ params }: { params: { id: string } }) {
           <span className="flex items-center gap-1 text-xs text-green-600 font-medium">
             <Check className="w-3.5 h-3.5" /> Live
           </span>
+        )}
+
+        {/* Launch Trip Page — shown once published */}
+        {(published || itinerary.status === 'published') && !tripLaunched && (
+          <button
+            onClick={handleLaunchTrip}
+            disabled={launching}
+            className="flex items-center gap-1.5 text-xs bg-amber-500 text-white px-3 py-1 rounded-lg hover:bg-amber-600 transition-colors disabled:opacity-60"
+          >
+            <ExternalLink className="w-3 h-3" />
+            {launching ? 'Launching...' : 'Launch Trip Page'}
+          </button>
+        )}
+
+        {/* Manage Signups — shown once trip is launched */}
+        {(tripLaunched || itinerary.trip_launched) && (
+          <div className="flex items-center gap-2">
+            <a
+              href={`/trip/${params.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs border border-amber-400 text-amber-700 px-3 py-1 rounded-lg hover:bg-amber-50 transition-colors"
+            >
+              <ExternalLink className="w-3 h-3" /> Public Page
+            </a>
+            <button
+              onClick={() => router.push(`/trip/${params.id}/manage`)}
+              className="flex items-center gap-1.5 text-xs bg-brand-600 text-white px-3 py-1 rounded-lg hover:bg-brand-700 transition-colors"
+            >
+              <LayoutDashboard className="w-3 h-3" /> Manage Signups
+            </button>
+          </div>
         )}
       </div>
 
@@ -162,37 +187,6 @@ export default function ItineraryPage({ params }: { params: { id: string } }) {
         )}
       </div>
 
-      {/* Find Operators */}
-      <div className="border-t border-notion-border pt-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-semibold text-notion-text">Matched Operators</h2>
-          <button
-            onClick={findOperators}
-            disabled={loadingOps}
-            className="flex items-center gap-2 text-sm bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-60"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            {loadingOps ? 'Searching...' : 'Find Operators'}
-          </button>
-        </div>
-
-        {operators.length > 0 ? (
-          <div className="space-y-4">
-            {operators.map(op => (
-              <OperatorCard
-                key={op.id}
-                operator={op}
-                showMatchScore
-                onContact={(o) => router.push(`/negotiations?operator=${o.id}&itinerary=${params.id}`)}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8 text-notion-muted text-sm">
-            Click "Find Operators" to discover local experts for this trip
-          </div>
-        )}
-      </div>
     </div>
   )
 }

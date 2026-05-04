@@ -3,26 +3,21 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import ChatPanel from '@/components/ChatPanel'
 import ItineraryBlock from '@/components/ItineraryBlock'
-import OperatorCard from '@/components/OperatorCard'
 import { updateItinerary, createItinerary, publishItinerary } from '@/lib/api'
 import {
   Map, Globe, Clock, Users, DollarSign, Send,
-  Check, ChevronRight, AlertCircle, Sparkles, ClipboardList
+  Check, ChevronRight, Sparkles
 } from 'lucide-react'
 
 export default function NewItineraryPage() {
   const router = useRouter()
   const [itinerary, setItinerary] = useState<any>(null)
   const [itineraryId, setItineraryId] = useState<string | null>(null)
-  const [suggestedOperators, setSuggestedOperators] = useState<any[]>([])
   const [saving, setSaving] = useState(false)
   const [published, setPublished] = useState(false)
 
   const handleItineraryUpdate = async (data: any) => {
     setItinerary(data)
-    setSuggestedOperators([])
-
-    // Persist to backend
     if (!itineraryId) {
       const saved = await createItinerary(data)
       setItineraryId(saved.id)
@@ -31,9 +26,8 @@ export default function NewItineraryPage() {
     }
   }
 
-  const handleOperatorSuggestion = (operators: any[]) => {
-    setSuggestedOperators(operators)
-  }
+  // kept for ChatPanel prop compatibility — operators no longer shown
+  const handleOperatorSuggestion = (_operators: any[]) => {}
 
   const handlePublish = async () => {
     if (!itineraryId) return
@@ -135,72 +129,6 @@ export default function NewItineraryPage() {
                   <ItineraryBlock key={i} day={day} />
                 ))}
               </div>
-
-              {/* Suggested Operators */}
-              {suggestedOperators.length > 0 && (
-                <div className="mb-8">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="h-px flex-1 bg-notion-border" />
-                    <span className="text-xs font-semibold text-brand-600 uppercase tracking-wider px-2">
-                      Matched Operators
-                    </span>
-                    <div className="h-px flex-1 bg-notion-border" />
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    {suggestedOperators.map(op => (
-                      <OperatorCard
-                        key={op.id}
-                        operator={op}
-                        showMatchScore
-                        onContact={(o) => router.push(`/negotiations?operator=${o.id}&itinerary=${itineraryId}`)}
-                      />
-                    ))}
-                  </div>
-
-                  {/* What we need from each traveler */}
-                  <div className="rounded-xl border-2 border-blue-200 bg-blue-50 p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <ClipboardList className="w-4 h-4 text-blue-600" />
-                      <span className="font-semibold text-blue-800 text-sm">What we need from each traveler</span>
-                    </div>
-                    <div className="space-y-3">
-                      <div>
-                        <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">Per traveler (both)</div>
-                        <ul className="space-y-1">
-                          {[
-                            'Passport copy (valid 6+ months past departure)',
-                            'Travel insurance certificate covering trekking + helicopter evacuation',
-                            'Medical fitness declaration',
-                            'Emergency contact name and phone number',
-                            'Dietary preferences and any allergies',
-                          ].map((req, i) => (
-                            <li key={i} className="flex items-start gap-2 text-xs text-blue-800">
-                              <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
-                              {req}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">Content creator add-ons</div>
-                        <ul className="space-y-1">
-                          {[
-                            'Camera and drone equipment list for customs clearance',
-                            'Drone model and serial number for permit filing',
-                          ].map((req, i) => (
-                            <li key={i} className="flex items-start gap-2 text-xs text-blue-800">
-                              <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
-                              {req}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <p className="text-xs text-blue-600 italic">Operator will confirm the full requirements list once the deal is finalized.</p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </>
           )}
         </div>

@@ -1,0 +1,655 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-04",
+  "country_focus": "Nepal",
+  "image_convention": {
+    "cover_image_path": "data/operators/images/{id}.jpg",
+    "note": "Cover images are placeholders. Add crawled or licensed images into data/operators/images/ using each operator id."
+  },
+  "operators": [
+    {
+      "id": "nepal_vision_treks_expeditions",
+      "name": "Nepal Vision Treks & Expeditions",
+      "websites": ["https://www.nepalvisiontreks.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Thamel, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-9802342081", "+977-9851020731"],
+        "whatsapp": ["+977-9802342081"],
+        "email": "info@nepalvisiontreks.com"
+      },
+      "key_people": [
+        {"name": "Kartavya Basnet", "role": "needs verification"},
+        {"name": "Parashu Nepal", "role": "Marketing Director, USA contact"},
+        {"name": "Ashim Wagle", "role": "Marketing Director, Australia contact"}
+      ],
+      "destinations": ["Everest Region", "Annapurna Region", "Upper Mustang", "Langtang", "Nepal"],
+      "activities": ["trekking", "luxury trekking", "sightseeing", "helicopter-supported trekking"],
+      "styles": ["luxury", "adventure", "trekking", "cultural"],
+      "price_score": 4,
+      "luxury_fit": "yes",
+      "luxury_fit_score": 4,
+      "price_indicators": [
+        {"name": "Everest Luxury Trek", "price_usd": 3180, "unit": "per person", "source": "official luxury treks page"},
+        {"name": "Everest Luxury Lodge Trek", "price_usd": 3880, "unit": "per person", "source": "official package page"}
+      ],
+      "known_products": [
+        "Everest Luxury Trek",
+        "Everest Luxury Lodge Trek",
+        "Luxury Treks in Nepal"
+      ],
+      "hotel_capability": {
+        "city_hotels": "hotel accommodation in Kathmandu",
+        "trekking_route": "teahouses/lodges; luxury lodge options on selected routes",
+        "notes": "Official pages describe luxury trek products, hotel accommodation in Kathmandu, teahouses during trek, and luxury lodge options."
+      },
+      "notes": "Good fit for Everest luxury/lodge products and heli-style comfort positioning.",
+      "cover_image": "data/operators/images/nepal_vision_treks_expeditions.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.nepalvisiontreks.com/contact",
+        "https://www.nepalvisiontreks.com/package-place/luxury-treks",
+        "https://www.nepalvisiontreks.com/package-detail/everest-luxury-trek",
+        "https://www.nepalvisiontreks.com/package-detail/everest-luxury-lodge-trek"
+      ],
+      "verification_status": "partially_verified"
+    },
+    {
+      "id": "hiking_nepal",
+      "name": "Hiking Nepal",
+      "websites": ["https://www.hikingnepal.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Dabali Marga, Thamel, Kathmandu",
+      "contacts": {
+        "phones": ["+977-1-4701537", "+977-9802342080", "+977-9802342081"],
+        "whatsapp": ["+977-9802342081"],
+        "email": "info@hikingnepal.com"
+      },
+      "key_people": [
+        {"name": "Ashim Wagle", "role": "Chairman"},
+        {"name": "Navaraj Wagle", "role": "Managing Director"}
+      ],
+      "destinations": ["Nepal", "Tibet", "Bhutan", "Everest Region", "Pikey Peak", "Annapurna"],
+      "activities": ["trekking", "luxury trekking", "heli tour", "peak climbing", "cultural travel"],
+      "styles": ["luxury", "adventure", "trekking", "cultural"],
+      "price_score": 3.5,
+      "luxury_fit": "yes",
+      "luxury_fit_score": 4,
+      "price_indicators": [
+        {"name": "Pikey Peak Luxury Trek", "price_usd_range": [900, 2200], "unit": "per person", "source": "official Pikey Peak luxury page"},
+        {"name": "5-day Pikey Peak Fast-Track Luxury with helicopter return", "price_usd": 2650, "unit": "per person", "source": "official Pikey Peak luxury page"},
+        {"name": "Everest Luxury Trek", "price_usd": 3050, "unit": "per person", "source": "official Nepal trips listing"}
+      ],
+      "known_products": [
+        "Pikey Peak Luxury Trek",
+        "Everest Luxury Trek",
+        "Everest Base Camp Trek",
+        "Annapurna Base Camp Heli Tour"
+      ],
+      "hotel_capability": {
+        "city_hotels": "available on Nepal itineraries",
+        "trekking_route": "heated lodges, en-suite options, upgraded lodge network on Pikey Peak",
+        "notes": "Official Pikey Peak luxury page specifically describes upgraded lodges with electric blankets, en-suite bathrooms, solar-heated water, and satellite Wi-Fi at lower lodges."
+      },
+      "notes": "Strong match for luxury-lite Himalayan products, especially Pikey Peak and lower Solukhumbu alternatives.",
+      "cover_image": "data/operators/images/hiking_nepal.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.hikingnepal.com/pikey-peak-luxury-trek",
+        "https://hikingnepal.com/our-team",
+        "https://hikingnepal.com/public/legal-document",
+        "https://www.hikingnepal.com/nepal"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "treks_planner_nepal",
+      "name": "Treks Planner Nepal",
+      "websites": ["https://www.treksplannernepal.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Kesher Mahal Road, Thamel, Kathmandu",
+      "contacts": {
+        "phones": ["+977-9810334042", "+977-1-4432875"],
+        "whatsapp": ["+977-9810334042"],
+        "email": "info@treksplannernepal.com"
+      },
+      "key_people": [
+        {"name": "Saroj Jung Rana", "role": "needs verification"},
+        {"name": "Nittam Subedi", "role": "needs verification"}
+      ],
+      "destinations": ["Nepal", "Everest Region", "Annapurna", "Langtang", "Tibet", "Bhutan"],
+      "activities": ["trekking", "peak climbing", "expeditions", "river rafting", "day tours", "helicopter tours", "mountain flights"],
+      "styles": ["adventure", "custom", "trekking", "heli tour"],
+      "price_score": 3,
+      "luxury_fit": "some",
+      "luxury_fit_score": 3,
+      "price_indicators": [
+        {"name": "Syangboche Panoramic Heli-Sightseeing", "price_usd": 1150, "unit": "per person/listed package"},
+        {"name": "Everest Panoramic Heli-Sightseeing", "price_usd": 1495, "unit": "per person/listed package"}
+      ],
+      "known_products": ["Helicopter Tours in Nepal", "Everest Base Camp Trek", "Annapurna Heli Tour", "Langtang Heli Tour"],
+      "hotel_capability": {
+        "city_hotels": "customizable",
+        "trekking_route": "needs verification",
+        "notes": "Official site emphasizes flexible/customizable packages and heli tours rather than clear luxury lodge positioning."
+      },
+      "notes": "Good operator for customizable and helicopter-heavy itineraries; luxury lodging detail needs confirmation.",
+      "cover_image": "data/operators/images/treks_planner_nepal.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.treksplannernepal.com/",
+        "https://www.treksplannernepal.com/contact.html",
+        "https://www.treksplannernepal.com/nepal/helicopter-tours-in-nepal.html"
+      ],
+      "verification_status": "partially_verified"
+    },
+    {
+      "id": "access_nepal_tours_trekking",
+      "name": "Access Nepal Tours & Trekking",
+      "websites": ["https://accessnepaltour.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Thamel / Amrit Marga, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-9841021636", "+977-9767552680", "+977-9860313326", "+977-9851051658"],
+        "whatsapp": ["+977-9841021636", "+977-9767552680"],
+        "email": "info@accessnepaltour.com"
+      },
+      "key_people": [
+        {"name": "Devendra Wagle", "role": "founder, needs verification from official source"}
+      ],
+      "destinations": ["Everest Region", "Kathmandu", "Nepal"],
+      "activities": ["luxury trekking", "trekking", "sightseeing", "heli-supported trekking", "luxury tours"],
+      "styles": ["luxury", "comfort", "adventure", "trekking"],
+      "price_score": 5,
+      "luxury_fit": "strong_yes",
+      "luxury_fit_score": 5,
+      "price_indicators": [
+        {"name": "Everest Base Camp Luxury Trek", "price_usd": 3690, "unit": "per person discounted/listed", "source": "official luxury treks page"},
+        {"name": "Everest Base Camp Luxury Trek", "price_usd": 5300, "unit": "per person before discount/listed", "source": "official luxury treks page"},
+        {"name": "Kathmandu Luxury with Everest Heli Tour", "price_usd": 4290, "unit": "per person discounted/listed", "source": "official luxury tour page"}
+      ],
+      "known_products": [
+        "Everest Base Camp Luxury Trek",
+        "Classic Everest Base Camp Trek",
+        "Kathmandu Luxury with Everest Heli Tour"
+      ],
+      "hotel_capability": {
+        "city_hotels": "Kathmandu accommodation included on luxury products",
+        "trekking_route": "deluxe/luxury teahouses and lodges on selected EBC products",
+        "notes": "Official pages describe premium comfort, high-end accommodation, deluxe teahouses, and luxury lodges."
+      },
+      "notes": "One of the strongest luxury-fit operators in this list based on official product pages and pricing.",
+      "cover_image": "data/operators/images/access_nepal_tours_trekking.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://accessnepaltour.com/contact/",
+        "https://accessnepaltour.com/tour-activity/comfort-and-luxury/",
+        "https://accessnepaltour.com/tour/everest-base-camp-luxury-trek/",
+        "https://accessnepaltour.com/tour/classic-everest-base-camp-trek/",
+        "https://accessnepaltour.com/tour-activity/luxury-tour/"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "classic_outdoors",
+      "name": "Classic Outdoor / Classic Outdoors",
+      "websites": ["https://www.classicoutdoors.com.np", "https://www.theclassicoutdoors.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Jyatha, Thamel, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-1-5356900", "+977-9851223737"],
+        "whatsapp": [],
+        "email": "info@theclassicoutdoors.com"
+      },
+      "key_people": [
+        {"name": "Needs verification", "role": "key person"}
+      ],
+      "destinations": ["Nepal", "India", "Tibet", "Bhutan"],
+      "activities": ["trekking", "climbing", "expeditions", "mountain biking", "cultural tours", "helicopter tours"],
+      "styles": ["adventure", "trekking", "custom", "heli tour"],
+      "price_score": 2.5,
+      "luxury_fit": "limited",
+      "luxury_fit_score": 2,
+      "price_indicators": [
+        {"name": "Nepal Trekking", "price_usd_from": 650, "unit": "starting from", "source": "official Nepal page"},
+        {"name": "Everest Base Camp Trek", "price_usd": 1390, "unit": "all inclusive cost/listed package"}
+      ],
+      "known_products": ["Everest Base Camp Trek", "Helicopter Tour", "Annapurna Sanctuary Trek", "Manaslu Circuit Trek"],
+      "hotel_capability": {
+        "city_hotels": "hotels in Kathmandu on itineraries",
+        "trekking_route": "mountain lodges/lodges",
+        "notes": "Official site has helicopter tour and broad trekking products, but limited explicit luxury lodge positioning."
+      },
+      "notes": "Good general trekking and heli operator; luxury fit is weaker than Access Nepal, Nepal Vision, or Hiking Nepal.",
+      "cover_image": "data/operators/images/classic_outdoors.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.classicoutdoors.com.np/",
+        "https://www.classicoutdoors.com.np/nepal",
+        "https://www.classicoutdoors.com.np/nepal/trekking/annapurna-circuit-trek"
+      ],
+      "verification_status": "partially_verified"
+    },
+    {
+      "id": "caravan_outdoors",
+      "name": "Caravan Outdoor / Caravan Outdoors",
+      "websites": ["https://caravanoutdoors.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Bhagawan Bahal, Ward No. 26, Thamel, Kathmandu, Nepal 44600",
+      "contacts": {
+        "phones": ["+977-9851049483", "+977-1-4520840"],
+        "whatsapp": ["+977-9851049483"],
+        "email": "info@caravanoutdoors.com"
+      },
+      "key_people": [
+        {"name": "Gautam Raj Wagle", "role": "Founder / CEO"},
+        {"name": "Ram Bhandari", "role": "Director Sales and Marketing"}
+      ],
+      "destinations": ["Nepal", "India", "Tibet", "Bhutan"],
+      "activities": ["trekking", "peak climbing", "expedition", "mountaineering", "wildlife", "hiking"],
+      "styles": ["adventure", "trekking", "custom"],
+      "price_score": 3,
+      "luxury_fit": "some",
+      "luxury_fit_score": 3,
+      "price_indicators": [],
+      "known_products": ["Nepal trekking", "Bhutan tour", "peak climbing", "expeditions"],
+      "hotel_capability": {
+        "city_hotels": "needs verification",
+        "trekking_route": "needs verification",
+        "notes": "Official content emphasizes experienced team, 50+ trips, and quality/safety; luxury accommodation details need confirmation."
+      },
+      "notes": "Experienced outdoor team and multi-country operator; use as a mid-fit custom adventure operator unless luxury details are confirmed.",
+      "cover_image": "data/operators/images/caravan_outdoors.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://caravanoutdoors.com/about/",
+        "https://caravanoutdoors.com/our-team/",
+        "https://caravanoutdoors.com/different-tours/",
+        "https://caravanoutdoors.com/faqs/"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "amazing_nepal_treks",
+      "name": "Amazing Nepal Treks",
+      "websites": ["https://www.amazingnepaltrek.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Keshar Mahal Marg, Thamel, Kathmandu",
+      "contacts": {
+        "phones": ["+977-9851116042", "+977-9843706089", "+977-9841966352"],
+        "whatsapp": ["+977-9851116042"],
+        "email": "info@amazingnepaltrek.com"
+      },
+      "key_people": [
+        {"name": "Santosh Adhikari", "role": "Founder and Managing Director"},
+        {"name": "Nirmal Timilsina", "role": "Co-Founder and Director"}
+      ],
+      "destinations": ["Nepal", "India", "Tibet", "Bhutan"],
+      "activities": ["trekking", "peak climbing", "tours", "cultural travel", "spiritual travel", "safari", "rafting"],
+      "styles": ["adventure", "trekking", "custom", "budget-friendly"],
+      "price_score": 2.5,
+      "luxury_fit": "limited",
+      "luxury_fit_score": 2,
+      "price_indicators": [],
+      "known_products": ["treks", "peak climbing", "tours"],
+      "hotel_capability": {
+        "city_hotels": "needs verification",
+        "trekking_route": "needs verification",
+        "notes": "Official site confirms trekking/expedition focus and custom travel, but luxury lodge capability was not found."
+      },
+      "notes": "Founder-led adventure operator founded in 2017; stronger for authentic adventure than luxury positioning.",
+      "cover_image": "data/operators/images/amazing_nepal_treks.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.amazingnepaltrek.com/contact-us",
+        "https://www.amazingnepaltrek.com/team",
+        "https://www.amazingnepaltrek.com/page/about-us"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "himalayan_adventure_nepal",
+      "name": "Himalayan Adventure Nepal (HAN)",
+      "websites": ["https://www.himalayanadventurenepal.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Bhagwan Bahal, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-9851099397"],
+        "whatsapp": ["+977-9851099397"],
+        "email": "info@himalayanadventurenepal.com"
+      },
+      "key_people": [
+        {"name": "Raju Bhatta", "role": "Key Person / contact"}
+      ],
+      "destinations": ["Nepal", "Everest Region", "Annapurna", "Tibet", "Bhutan"],
+      "activities": ["trekking", "adventure tours", "cultural tours", "climbing tours", "sightseeing tours"],
+      "styles": ["adventure", "trekking", "cultural", "custom"],
+      "price_score": 3,
+      "luxury_fit": "some",
+      "luxury_fit_score": 3,
+      "price_indicators": [],
+      "known_products": ["Everest Base Camp", "Annapurna Base Camp", "custom trekking"],
+      "hotel_capability": {
+        "city_hotels": "needs verification",
+        "trekking_route": "needs verification",
+        "notes": "TAAN and travel listings verify contact and experienced operator positioning; luxury lodging detail needs confirmation."
+      },
+      "notes": "Experienced trekking/adventure operator; 1992 claim is supported by Tripadvisor/listing text, while TAAN verifies current registration and key person.",
+      "cover_image": "data/operators/images/himalayan_adventure_nepal.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.taan.org.np/members/2302",
+        "https://www.tripadvisor.com/Attraction_Review-g293890-d15080194-Reviews-Himalayan_Adventure_Nepal-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html",
+        "https://www.travelagents10.com/NP/Kathmandu/681782595527893/Himalayan-Adventure-Nepal"
+      ],
+      "verification_status": "partially_verified_third_party"
+    },
+    {
+      "id": "adventure_mountain_explore",
+      "name": "Adventure Mountain Explore (AME)",
+      "websites": ["https://www.ametreks.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Thamel, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-1-4524592", "+977-9767556118"],
+        "whatsapp": ["+977-9767556118"],
+        "email": "info@ametreks.com"
+      },
+      "key_people": [
+        {"name": "Dhruba Khanal", "role": "Managing Director / founder"},
+        {"name": "Devendra Wagle", "role": "Executive Director"},
+        {"name": "Niti Sharma", "role": "Correspondence Officer"}
+      ],
+      "destinations": ["Nepal", "Tibet", "Bhutan"],
+      "activities": ["trekking", "expeditions", "tours", "transportation", "accommodation", "air tickets"],
+      "styles": ["adventure", "trekking", "custom"],
+      "price_score": 3,
+      "luxury_fit": "some",
+      "luxury_fit_score": 3,
+      "price_indicators": [],
+      "known_products": ["Everest Base Camp Trek", "Annapurna Circuit Trek", "Tibet", "Bhutan custom tours"],
+      "hotel_capability": {
+        "city_hotels": "can arrange accommodation",
+        "trekking_route": "needs verification",
+        "notes": "Official team page says AME provides accommodation and diversified travel services, but luxury lodge capability needs confirmation."
+      },
+      "notes": "Local trekking/expedition operator with broad travel logistics capability.",
+      "cover_image": "data/operators/images/adventure_mountain_explore.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.ametreks.com/contact",
+        "https://www.ametreks.com/our_team.php"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "amigo_treks",
+      "name": "Amigo Treks",
+      "websites": ["https://www.amigotrekking.com", "https://www.amigotreks.com.np"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Amrit Marga, Thamel, Kathmandu, Nepal 44600",
+      "contacts": {
+        "phones": ["+977-9813653172", "+977-9851136878"],
+        "whatsapp": ["+977-9851136878"],
+        "email": "info@amigotrekking.com"
+      },
+      "key_people": [
+        {"name": "Devendra Wagle", "role": "Shareholder / Managing Director per older team page"},
+        {"name": "Dinesh Bhusal", "role": "Director / Co-Founder"}
+      ],
+      "destinations": ["Nepal", "Tibet", "Bhutan", "Everest Region", "Annapurna Region", "Langtang Region"],
+      "activities": ["trekking", "luxury trekking", "helicopter trips", "cultural tours", "custom journeys", "expeditions"],
+      "styles": ["luxury", "custom", "trekking", "cultural", "helicopter"],
+      "price_score": 3.5,
+      "luxury_fit": "yes",
+      "luxury_fit_score": 4,
+      "price_indicators": [
+        {"name": "Everest Base Camp Trek with Gokyo Lake and Chola Pass", "price_usd_from": 1770, "unit": "listed start price"}
+      ],
+      "known_products": [
+        "Luxury Everest Base Camp",
+        "Ultimate Luxury Kathmandu",
+        "Helicopter Tour",
+        "Everest Base Camp Trek"
+      ],
+      "hotel_capability": {
+        "city_hotels": "custom route/hotel planning",
+        "trekking_route": "luxury and helicopter-supported routes available",
+        "notes": "Newer site explicitly positions Amigo around luxury access, private journeys, hotels/lodges, permits, and transfers."
+      },
+      "notes": "Strong fit for custom luxury and helicopter-supported planning; use newer site for luxury positioning.",
+      "cover_image": "data/operators/images/amigo_treks.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.amigotrekking.com/contact",
+        "https://www.amigotrekking.com/our-team.php",
+        "https://www.amigotreks.com.np/",
+        "https://www.amigotrekking.com/amigo/112/about-us"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "desire_adventure",
+      "name": "Desire Adventure",
+      "websites": ["https://www.desireadventures.com", "https://desirenepal.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Chhaya Devi Complex, Thamel, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-1-4512344", "+977-1-5252053", "+977-9851340178", "+977-9851340176", "+977-9851340175", "+977-9802342081"],
+        "whatsapp": [],
+        "email": "info@desirenepal.com"
+      },
+      "key_people": [
+        {"name": "Needs verification", "role": "key person"}
+      ],
+      "destinations": ["Nepal", "Tibet", "Bhutan", "Everest Region", "Annapurna Region", "Manaslu", "Upper Mustang"],
+      "activities": ["trekking", "tours", "travel", "air ticketing", "adventure travel"],
+      "styles": ["budget-friendly", "adventure", "trekking", "custom"],
+      "price_score": 2.5,
+      "luxury_fit": "limited",
+      "luxury_fit_score": 2,
+      "price_indicators": [
+        {"name": "Everest trekking package", "price_usd_from": 990, "unit": "starting from", "source": "official Desire Adventures homepage"},
+        {"name": "Annapurna trekking package", "price_usd_from": 730, "unit": "starting from", "source": "official Desire Adventures homepage"}
+      ],
+      "known_products": ["Everest Base Camp Trek", "Pikey Peak Trek", "Short Manaslu Circuit Trek", "Annapurna trekking packages"],
+      "hotel_capability": {
+        "city_hotels": "travel agency can likely arrange, needs verification",
+        "trekking_route": "needs verification",
+        "notes": "Official pages emphasize adventure travel and accessible pricing; luxury capability was not found."
+      },
+      "notes": "Good affordable-cost operator candidate; weak luxury signal.",
+      "cover_image": "data/operators/images/desire_adventure.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.desireadventures.com/",
+        "https://desirenepal.com/",
+        "https://desirenepal.com/contact-us/",
+        "https://desirenepal.com/about-desire-nepal/"
+      ],
+      "verification_status": "partially_verified"
+    },
+    {
+      "id": "imperial_nepal_treks",
+      "name": "Imperial Nepal Treks",
+      "websites": ["https://www.imperialnepaltreks.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Dabali Marga, Thamel, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-1-4524836", "+977-9851018810", "+977-9851053103", "+977-9841542453", "+977-9841932752"],
+        "whatsapp": ["+977-9808736207", "+977-9851053103"],
+        "email": null
+      },
+      "key_people": [
+        {"name": "Needs verification", "role": "key person"}
+      ],
+      "destinations": ["Nepal", "Tibet", "Bhutan", "Everest Region", "Annapurna Region", "Langtang", "Upper Mustang"],
+      "activities": ["trekking", "tours", "heli tours", "peak climbing", "multi-country tours"],
+      "styles": ["budget-friendly", "comfort", "trekking", "local expert"],
+      "price_score": 2.5,
+      "luxury_fit": "limited",
+      "luxury_fit_score": 2,
+      "price_indicators": [
+        {"name": "Classic Everest Base Camp", "price_usd": 1250, "unit": "listed discounted package"},
+        {"name": "Everest Helicopter Tour", "price_usd": 1550, "unit": "listed discounted package"},
+        {"name": "Annapurna Base Camp Trek", "price_usd": 900, "unit": "listed discounted package"}
+      ],
+      "known_products": [
+        "Everest View Luxury Lodge Trek",
+        "Everest Base Camp Helicopter Trekking",
+        "Classic Everest Base Camp",
+        "Annapurna Base Camp Trek"
+      ],
+      "hotel_capability": {
+        "city_hotels": "available on tours",
+        "trekking_route": "comfort/luxury lodge product exists for Everest View, needs details",
+        "notes": "Official navigation lists Everest View Luxury Lodge Trek and comfort products, but homepage positioning is mostly local expert / fair pricing."
+      },
+      "notes": "Strong contactability and broad inventory; luxury fit should be verified package-by-package.",
+      "cover_image": "data/operators/images/imperial_nepal_treks.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.imperialnepaltreks.com/",
+        "https://www.imperialnepaltreks.com/contact/",
+        "https://www.imperialnepaltreks.com/offer-inquiry.php"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "aiming_adventure",
+      "name": "Aiming Adventure",
+      "websites": ["https://www.aimingadventure.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Dabali Marga, Thamel, Kathmandu 44600",
+      "contacts": {
+        "phones": ["+977-9849211457"],
+        "whatsapp": ["+977-9849211457"],
+        "email": "info@aimingadventure.com"
+      },
+      "key_people": [
+        {"name": "Bikal Duwadi", "role": "Managing Director and Travel Organiser"},
+        {"name": "Davendra Wagle", "role": "Executive Director"}
+      ],
+      "destinations": ["Nepal", "Tibet", "Bhutan", "Everest", "Annapurna", "Langtang", "Mustang"],
+      "activities": ["trekking", "peak climbing", "travel planning", "expeditions"],
+      "styles": ["adventure", "trekking", "budget-friendly"],
+      "price_score": 2.5,
+      "luxury_fit": "limited",
+      "luxury_fit_score": 2,
+      "price_indicators": [
+        {"name": "Budget Annapurna Base Camp Trek", "price_usd": 765, "unit": "listed package"},
+        {"name": "Everest Base Camp Trek", "price_usd": 1365, "unit": "listed package"},
+        {"name": "Ghorepani Poon Hill Trek", "price_usd": 645, "unit": "listed package"}
+      ],
+      "known_products": ["Everest Base Camp Trek", "Budget Annapurna Base Camp Trek", "Gokyo Lake Trek", "Ghorepani Poon Hill Trek"],
+      "hotel_capability": {
+        "city_hotels": "needs verification",
+        "trekking_route": "needs verification",
+        "notes": "Official site shows budget and trekking products; no strong luxury accommodation signal found."
+      },
+      "notes": "Trekking/peak-climbing specialist with clear leadership details; use for value-focused trekking.",
+      "cover_image": "data/operators/images/aiming_adventure.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://www.aimingadventure.com/",
+        "https://www.aimingadventure.com/contact/",
+        "https://www.aimingadventure.com/information/our%2Bteam-76"
+      ],
+      "verification_status": "verified_from_official_site"
+    },
+    {
+      "id": "nepal_peak_adventure",
+      "name": "Nepal Peak Adventure",
+      "websites": ["https://nepalpeakadventure.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Bhagwan Bahal Street, Thamel, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-9841319155"],
+        "whatsapp": ["+977-9841319155"],
+        "email": "info@nepalpeakadventure.com"
+      },
+      "key_people": [
+        {"name": "Hom Rana", "role": "founder / professional guide"}
+      ],
+      "destinations": ["Nepal", "Everest Region", "Annapurna Region", "Langtang Region", "Manaslu Region", "Dolpo Region"],
+      "activities": ["trekking", "peak climbing", "expeditions", "short treks"],
+      "styles": ["adventure", "peak climbing", "trekking", "budget-friendly"],
+      "price_score": 3,
+      "luxury_fit": "some",
+      "luxury_fit_score": 3,
+      "price_indicators": [
+        {"name": "Annapurna Circuit Trek", "price_usd_from": 1380, "unit": "listed from price"},
+        {"name": "Manaslu Circuit Trek", "price_usd_from": 1520, "unit": "listed from price"},
+        {"name": "Mera Peak Climbing", "price_usd_from": 2590, "unit": "listed from price"}
+      ],
+      "known_products": ["Annapurna Circuit Trek", "Manaslu Circuit Trek", "Island Peak Climbing", "Mera Peak Climbing"],
+      "hotel_capability": {
+        "city_hotels": "needs verification",
+        "trekking_route": "budget-friendly, luxury and classical trips mentioned generally",
+        "notes": "Official homepage states budget-friendly trips, luxury trips, and classical trips, but product-level luxury details need verification."
+      },
+      "notes": "Best fit for trekking and peak climbing; luxury capability should be validated for specific itineraries.",
+      "cover_image": "data/operators/images/nepal_peak_adventure.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://nepalpeakadventure.com/"
+      ],
+      "verification_status": "partially_verified"
+    },
+    {
+      "id": "himalayan_ecstasy_nepal",
+      "name": "Ecstatic Himalaya / Himalayan Ecstasy Nepal",
+      "websites": ["https://himalayanecstasynepal.com"],
+      "country": "Nepal",
+      "base_city": "Kathmandu",
+      "address": "Chaksibari Marg, Thamel, Kathmandu, Nepal",
+      "contacts": {
+        "phones": ["+977-9801126622", "+977-9851126622"],
+        "whatsapp": ["+977-9801126622", "+977-9851126622"],
+        "email": "info@himalayanecstasynepal.com"
+      },
+      "key_people": [
+        {"name": "Sujan Bhattarai", "role": "Founder and Managing Director"},
+        {"name": "Anil Bhattarai", "role": "contact / Everest summiteer"},
+        {"name": "Roshan Bhattarai", "role": "climbing guide"}
+      ],
+      "destinations": ["Nepal", "Himalaya", "Everest Region", "Kanchenjunga", "Trekking regions"],
+      "activities": ["trekking", "expeditions", "climbing", "cultural tours", "custom trips"],
+      "styles": ["adventure", "trekking", "climbing", "private/custom"],
+      "price_score": 3.5,
+      "luxury_fit": "yes",
+      "luxury_fit_score": 4,
+      "price_indicators": [],
+      "known_products": ["trekking", "expeditions", "private/custom trips"],
+      "hotel_capability": {
+        "city_hotels": "hospitality background present via leadership bio",
+        "trekking_route": "needs verification",
+        "notes": "Team and contact pages verify strong guide/climbing depth; user-provided FAQ says private/custom trips, but exact luxury lodge inventory should be confirmed."
+      },
+      "notes": "Strong expert-guide and custom-trip signal; likely good for private/custom high-touch trips, but confirm lodging details.",
+      "cover_image": "data/operators/images/himalayan_ecstasy_nepal.jpg",
+      "gallery": [],
+      "source_urls": [
+        "https://himalayanecstasynepal.com/our-team",
+        "https://himalayanecstasynepal.com/team/sujan-bhattarai",
+        "https://himalayanecstasynepal.com/faqs",
+        "https://himalayanecstasynepal.com/team/amrit-kumar-magar"
+      ],
+      "verification_status": "partially_verified"
+    }
+  ]
+}

@@ -95,3 +95,21 @@ class EmailRequest(BaseModel):
     user_email: str
     itinerary_id: str
     negotiation_id: Optional[str] = None
+
+class TripSignup(BaseModel):
+    id: str
+    name: str
+    email: str
+    experience: str  # beginner | intermediate | advanced
+    interests: List[str]
+    budget_range: str
+    demands: str
+    submitted_at: str
+
+class TripSignupRequest(BaseModel):
+    name: str
+    email: str
+    experience: str
+    interests: List[str]
+    budget_range: str
+    demands: str

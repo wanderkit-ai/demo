@@ -96,3 +96,33 @@ export function resetDemo() {
     method: 'POST',
   })
 }
+
+export function launchTrip(itineraryId: string) {
+  return request<any>(`/trips/${itineraryId}/launch`, { method: 'POST' })
+}
+
+export function getTrip(itineraryId: string) {
+  return request<any>(`/trips/${itineraryId}`)
+}
+
+export function submitTripSignup(itineraryId: string, data: {
+  name: string
+  email: string
+  experience: string
+  interests: string[]
+  budget_range: string
+  demands: string
+}) {
+  return request<any>(`/trips/${itineraryId}/signup`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+export function getTripSignups(itineraryId: string) {
+  return request<any[]>(`/trips/${itineraryId}/signups`)
+}
+
+export function sendToTravelers(itineraryId: string) {
+  return request<any>(`/trips/${itineraryId}/send-travelers`, { method: 'POST' })
+}
