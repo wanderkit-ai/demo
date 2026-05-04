@@ -47,6 +47,7 @@ interface Operator {
   description: string
   telegram_handle: string
   image_color: string
+  cover_image?: string
   packages: Package[]
 }
 
@@ -165,7 +166,15 @@ function OperatorCard({
     <div className="bg-warm-card rounded-xl border border-warm-border shadow-card overflow-hidden mb-4">
       <div className="flex">
         {/* Image area */}
-        <div className={clsx('w-[260px] shrink-0 relative', operator.image_color, 'min-h-[160px]')}>
+        <div className={clsx('w-[260px] shrink-0 relative overflow-hidden', operator.image_color, 'min-h-[160px]')}>
+          {operator.cover_image && (
+            <img
+              src={operator.cover_image}
+              alt={`${operator.name} operator`}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
           <button
             onClick={() => onFavorite(operator.id)}
             className={clsx(
@@ -176,10 +185,12 @@ function OperatorCard({
             <Heart className={clsx('w-3.5 h-3.5', isFavorited && 'fill-red-400')} />
           </button>
 
-          {/* Placeholder image with mountain emoji */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-30">
-            <Mountain className="w-16 h-16 text-warm-text" />
-          </div>
+          {/* Fallback marker when an operator has no cover image */}
+          {!operator.cover_image && (
+            <div className="absolute inset-0 flex items-center justify-center opacity-30">
+              <Mountain className="w-16 h-16 text-warm-text" />
+            </div>
+          )}
 
           {/* Badges at bottom */}
           <div className="absolute bottom-3 left-3 flex flex-col gap-1.5">

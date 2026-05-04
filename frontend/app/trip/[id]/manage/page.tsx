@@ -1,11 +1,12 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { getTrip, getTripSignups } from '@/lib/api'
+import { getOperators, getTrip, getTripSignups } from '@/lib/api'
+import OperatorCard from '@/components/OperatorCard'
 import {
-  ArrowLeft, Users, Brain, CheckCircle2,
+  ArrowLeft, Users, Brain,
   Loader2, Mountain, Camera, Heart,
-  Sparkles, Star, ChevronRight, Zap, MessageCircle
+  Sparkles, Star, ChevronRight, Zap
 } from 'lucide-react'
 
 const INTEREST_ICONS: Record<string, any> = {
@@ -34,13 +35,18 @@ export default function ManageTripPage() {
   const [loading, setLoading] = useState(true)
   const [step, setStep] = useState<Step>('signups')
   const [analysisEvents, setAnalysisEvents] = useState<any[]>([])
-  const [selectedOperator, setSelectedOperator] = useState<any>(null)
+  const [operators, setOperators] = useState<any[]>([])
 
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    Promise.all([getTrip(id), getTripSignups(id)])
-      .then(([t, s]) => { setTrip(t); setSignups(s); setLoading(false) })
+    Promise.all([getTrip(id), getTripSignups(id), getOperators()])
+      .then(([t, s, ops]) => {
+        setTrip(t)
+        setSignups(s)
+        setOperators(ops)
+        setLoading(false)
+      })
       .catch(() => setLoading(false))
   }, [id])
 
@@ -51,7 +57,6 @@ export default function ManageTripPage() {
   const runAnalysis = async () => {
     setStep('analyzing')
     setAnalysisEvents([])
-    setSelectedOperator(null)
 
     const res = await fetch(`/api/trips/${id}/analyze`, { method: 'POST' })
     if (!res.body) return
@@ -71,7 +76,6 @@ export default function ManageTripPage() {
           if (event.type === 'done') {
             setStep('analyzed')
           } else if (event.type === 'operator_selected') {
-            setSelectedOperator(event)
             setAnalysisEvents(prev => [...prev, event])
           } else {
             setAnalysisEvents(prev => [...prev, event])
@@ -255,29 +259,28 @@ export default function ManageTripPage() {
             </div>
           )}
 
-          {/* Operator selected card */}
-          {selectedOperator && (
-            <div className="mt-4 bg-green-50 border-2 border-green-200 rounded-xl p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <CheckCircle2 className="w-5 h-5 text-green-600" />
-                <span className="font-semibold text-green-800">Operator Selected</span>
-                <span className="ml-auto text-xs bg-green-200 text-green-800 px-2 py-0.5 rounded-full font-bold">{selectedOperator.score}/100</span>
-              </div>
-              <div className="text-sm font-semibold text-green-900 mb-2">{selectedOperator.operator_name}</div>
-              <p className="text-xs text-green-700 leading-relaxed mb-4">{selectedOperator.reasoning}</p>
-
-              {/* CTA to WhatsApp negotiate page */}
-              <button
-                onClick={() => router.push(`/trip/${id}/negotiate`)}
-                className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] text-white font-semibold py-3 rounded-xl transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Open Negotiation Chat
-              </button>
-            </div>
-          )}
-
           <div ref={bottomRef} />
+        </section>
+
+        {/* ── Operators ── */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Mountain className="w-4 h-4 text-brand-600" />
+              <h2 className="font-semibold text-notion-text">All Operators</h2>
+              <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-medium">{operators.length}</span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {operators.map(op => (
+              <OperatorCard
+                key={op.id}
+                operator={op}
+                onContact={() => router.push(`/negotiations?operator=${op.id}&itinerary=${id}`)}
+              />
+            ))}
+          </div>
         </section>
       </div>
     </div>
