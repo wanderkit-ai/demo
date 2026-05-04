@@ -1,0 +1,291 @@
+{
+  "generated_at": "2026-05-03T22:50:43-0400",
+  "note": "Images were scraped from public operator/source pages for local demo use. Verify rights before public or commercial use.",
+  "images": [
+    {
+      "operator_id": "nepal_vision_treks_expeditions",
+      "operator_name": "Nepal Vision Treks & Expeditions",
+      "status": "saved",
+      "cover_image": "data/operators/images/nepal_vision_treks_expeditions.jpg",
+      "source_image_url": "https://nvtrek.b-cdn.net/public/upload/6968e0d8a00a81768480984.webp",
+      "source_page_url": "https://www.nepalvisiontreks.com/package-detail/everest-luxury-lodge-trek",
+      "source_type": "meta[property=\"og:image\"]",
+      "original_width": 1200,
+      "original_height": 630,
+      "score": 109,
+      "candidate_count": 4,
+      "fetched_pages": [
+        "https://www.nepalvisiontreks.com/contact",
+        "https://www.nepalvisiontreks.com/package-place/luxury-treks",
+        "https://www.nepalvisiontreks.com/package-detail/everest-luxury-trek",
+        "https://www.nepalvisiontreks.com/package-detail/everest-luxury-lodge-trek",
+        "https://www.nepalvisiontreks.com"
+      ]
+    },
+    {
+      "operator_id": "hiking_nepal",
+      "operator_name": "Hiking Nepal",
+      "status": "saved",
+      "cover_image": "data/operators/images/hiking_nepal.jpg",
+      "source_image_url": "https://www.hikingnepal.com/wp-content/uploads/2022/11/himalayas-3989411.webp",
+      "source_page_url": "https://hikingnepal.com/public/legal-document",
+      "source_type": "meta[property=\"og:image\"]",
+      "original_width": 1080,
+      "original_height": 720,
+      "score": 105,
+      "candidate_count": 22,
+      "fetched_pages": [
+        "https://www.hikingnepal.com/pikey-peak-luxury-trek",
+        "https://hikingnepal.com/our-team",
+        "https://hikingnepal.com/public/legal-document",
+        "https://www.hikingnepal.com/nepal",
+        "https://www.hikingnepal.com"
+      ]
+    },
+    {
+      "operator_id": "treks_planner_nepal",
+      "operator_name": "Treks Planner Nepal",
+      "status": "saved",
+      "cover_image": "data/operators/images/treks_planner_nepal.jpg",
+      "source_image_url": "https://www.treksplannernepal.com/uploads/categories_destinations/1511347570-Everest Base Camp Helicopter Tour.jpg",
+      "source_page_url": "https://www.treksplannernepal.com/nepal/helicopter-tours-in-nepal.html",
+      "source_type": "img[src]",
+      "original_width": 1340,
+      "original_height": 500,
+      "score": 63,
+      "candidate_count": 1,
+      "fetched_pages": [
+        "https://www.treksplannernepal.com/",
+        "https://www.treksplannernepal.com/contact.html",
+        "https://www.treksplannernepal.com/nepal/helicopter-tours-in-nepal.html",
+        "https://www.treksplannernepal.com"
+      ]
+    },
+    {
+      "operator_id": "access_nepal_tours_trekking",
+      "operator_name": "Access Nepal Tours & Trekking",
+      "status": "saved",
+      "cover_image": "data/operators/images/access_nepal_tours_trekking.jpg",
+      "source_image_url": "https://accessnepaltour.com/wp-content/uploads/2024/08/luxury-new-1350x1100.webp",
+      "source_page_url": "https://accessnepaltour.com/tour/everest-base-camp-luxury-trek/",
+      "source_type": "meta[property=\"og:image\"]",
+      "original_width": 1350,
+      "original_height": 1100,
+      "score": 137,
+      "candidate_count": 15,
+      "fetched_pages": [
+        "https://accessnepaltour.com/contact/",
+        "https://accessnepaltour.com/tour-activity/comfort-and-luxury/",
+        "https://accessnepaltour.com/tour/everest-base-camp-luxury-trek/",
+        "https://accessnepaltour.com/tour/classic-everest-base-camp-trek/",
+        "https://accessnepaltour.com/tour-activity/luxury-tour/",
+        "https://accessnepaltour.com"
+      ]
+    },
+    {
+      "operator_id": "classic_outdoors",
+      "operator_name": "Classic Outdoor / Classic Outdoors",
+      "status": "saved",
+      "cover_image": "data/operators/images/classic_outdoors.jpg",
+      "source_image_url": "https://www.classicoutdoors.com.np/uploads/nepal/trekking/slider-annapurna-circuit-trek.jpg",
+      "source_page_url": "https://www.classicoutdoors.com.np/nepal/trekking/annapurna-circuit-trek",
+      "source_type": "img[src]",
+      "original_width": 1366,
+      "original_height": 500,
+      "score": 55,
+      "candidate_count": 7,
+      "fetched_pages": [
+        "https://www.classicoutdoors.com.np/",
+        "https://www.classicoutdoors.com.np/nepal",
+        "https://www.classicoutdoors.com.np/nepal/trekking/annapurna-circuit-trek",
+        "https://www.classicoutdoors.com.np"
+      ]
+    },
+    {
+      "operator_id": "caravan_outdoors",
+      "operator_name": "Caravan Outdoor / Caravan Outdoors",
+      "status": "saved",
+      "cover_image": "data/operators/images/caravan_outdoors.jpg",
+      "source_image_url": "https://caravanoutdoors.com/wp-content/uploads/2024/07/homepage-slider-4.jpg",
+      "source_page_url": "https://caravanoutdoors.com/",
+      "source_type": "manual-official-homepage-image",
+      "original_width": 1920,
+      "original_height": 700,
+      "note": "Manually selected from official homepage after bot verification cleared."
+    },
+    {
+      "operator_id": "amazing_nepal_treks",
+      "operator_name": "Amazing Nepal Treks",
+      "status": "saved",
+      "cover_image": "data/operators/images/amazing_nepal_treks.jpg",
+      "source_image_url": "https://www.amazingnepaltrek.com/Everest.webp",
+      "source_page_url": "https://www.amazingnepaltrek.com",
+      "source_type": "img[src]",
+      "original_width": 3019,
+      "original_height": 2599,
+      "score": 112,
+      "candidate_count": 4,
+      "fetched_pages": [
+        "https://www.amazingnepaltrek.com/contact-us",
+        "https://www.amazingnepaltrek.com/team",
+        "https://www.amazingnepaltrek.com/page/about-us",
+        "https://www.amazingnepaltrek.com"
+      ]
+    },
+    {
+      "operator_id": "himalayan_adventure_nepal",
+      "operator_name": "Himalayan Adventure Nepal (HAN)",
+      "status": "saved",
+      "cover_image": "data/operators/images/himalayan_adventure_nepal.jpg",
+      "source_image_url": "https://cdn-6245fb22c1ac19ed28d5419d.closte.com/wp-content/uploads/2023/05/DSC00778.jpg",
+      "source_page_url": "https://himalayanadventurenepal.com/everest-base-camp-trek/",
+      "source_type": "manual-official-image",
+      "original_width": 4608,
+      "original_height": 2592,
+      "score": 131,
+      "candidate_count": 15,
+      "fetched_pages": [
+        "https://www.taan.org.np/members/2302",
+        "https://www.travelagents10.com/NP/Kathmandu/681782595527893/Himalayan-Adventure-Nepal",
+        "https://www.himalayanadventurenepal.com"
+      ],
+      "note": "Manually selected from official operator site after contact-sheet review."
+    },
+    {
+      "operator_id": "adventure_mountain_explore",
+      "operator_name": "Adventure Mountain Explore (AME)",
+      "status": "saved",
+      "cover_image": "data/operators/images/adventure_mountain_explore.jpg",
+      "source_image_url": "https://www.ametreks.com/images/slider/trekking-in-nepal-everest.jpg",
+      "source_page_url": "https://www.ametreks.com",
+      "source_type": "img[src]",
+      "original_width": 1000,
+      "original_height": 550,
+      "score": 88,
+      "candidate_count": 7,
+      "fetched_pages": [
+        "https://www.ametreks.com/contact",
+        "https://www.ametreks.com/our_team.php",
+        "https://www.ametreks.com"
+      ]
+    },
+    {
+      "operator_id": "amigo_treks",
+      "operator_name": "Amigo Treks",
+      "status": "saved",
+      "cover_image": "data/operators/images/amigo_treks.jpg",
+      "source_image_url": "https://www.amigotrekking.com/cache/everest-base-camp-trek.jpg-w1600.jpg",
+      "source_page_url": "https://www.amigotrekking.com/",
+      "source_type": "manual-official-image",
+      "original_width": 1600,
+      "original_height": 450,
+      "score": 109,
+      "candidate_count": 4,
+      "fetched_pages": [
+        "https://www.amigotrekking.com/contact",
+        "https://www.amigotrekking.com/our-team.php",
+        "https://www.amigotreks.com.np/",
+        "https://www.amigotrekking.com/amigo/112/about-us",
+        "https://www.amigotrekking.com",
+        "https://www.amigotreks.com.np"
+      ],
+      "note": "Manually selected from official operator site after contact-sheet review."
+    },
+    {
+      "operator_id": "desire_adventure",
+      "operator_name": "Desire Adventure",
+      "status": "saved",
+      "cover_image": "data/operators/images/desire_adventure.jpg",
+      "source_image_url": "https://www.desireadventures.com/images/destination/destinationimages/Nepal.jpg",
+      "source_page_url": "https://www.desireadventures.com/",
+      "source_type": "img[src]",
+      "original_width": 1060,
+      "original_height": 906,
+      "score": 67,
+      "candidate_count": 2,
+      "fetched_pages": [
+        "https://www.desireadventures.com/",
+        "https://desirenepal.com/",
+        "https://desirenepal.com/contact-us/",
+        "https://desirenepal.com/about-desire-nepal/",
+        "https://www.desireadventures.com",
+        "https://desirenepal.com"
+      ]
+    },
+    {
+      "operator_id": "imperial_nepal_treks",
+      "operator_name": "Imperial Nepal Treks",
+      "status": "saved",
+      "cover_image": "data/operators/images/imperial_nepal_treks.jpg",
+      "source_image_url": "https://www.imperialnepaltreks.com/images/product/everest-base-camp-one-way-flight.jpg",
+      "source_page_url": "https://www.imperialnepaltreks.com/",
+      "source_type": "img[src]",
+      "original_width": 2000,
+      "original_height": 1128,
+      "score": 113,
+      "candidate_count": 11,
+      "fetched_pages": [
+        "https://www.imperialnepaltreks.com/",
+        "https://www.imperialnepaltreks.com/contact/",
+        "https://www.imperialnepaltreks.com/offer-inquiry.php",
+        "https://www.imperialnepaltreks.com"
+      ]
+    },
+    {
+      "operator_id": "aiming_adventure",
+      "operator_name": "Aiming Adventure",
+      "status": "saved",
+      "cover_image": "data/operators/images/aiming_adventure.jpg",
+      "source_image_url": "https://www.aimingadventure.com/images/product/everest-base-camp-trek-anz-may29.jpg",
+      "source_page_url": "https://www.aimingadventure.com/",
+      "source_type": "img[src]",
+      "original_width": 2000,
+      "original_height": 1128,
+      "score": 99,
+      "candidate_count": 11,
+      "fetched_pages": [
+        "https://www.aimingadventure.com/",
+        "https://www.aimingadventure.com/contact/",
+        "https://www.aimingadventure.com/information/our%2Bteam-76",
+        "https://www.aimingadventure.com"
+      ]
+    },
+    {
+      "operator_id": "nepal_peak_adventure",
+      "operator_name": "Nepal Peak Adventure",
+      "status": "saved",
+      "cover_image": "data/operators/images/nepal_peak_adventure.jpg",
+      "source_image_url": "https://nepalpeakadventure.com/wp-content/uploads/2022/11/380647920_2747872038688901_5874054035356125021_ncopy-ezgif.com-jpg-to-webp-converter.webp",
+      "source_page_url": "https://nepalpeakadventure.com/",
+      "source_type": "img[srcset]",
+      "original_width": 2048,
+      "original_height": 1344,
+      "score": 106,
+      "candidate_count": 14,
+      "fetched_pages": [
+        "https://nepalpeakadventure.com/",
+        "https://nepalpeakadventure.com"
+      ]
+    },
+    {
+      "operator_id": "himalayan_ecstasy_nepal",
+      "operator_name": "Ecstatic Himalaya / Himalayan Ecstasy Nepal",
+      "status": "saved",
+      "cover_image": "data/operators/images/himalayan_ecstasy_nepal.jpg",
+      "source_image_url": "https://media.app.himalayanecstasynepal.com/uploads/socialmedia/banner-4.jpg",
+      "source_page_url": "https://himalayanecstasynepal.com",
+      "source_type": "meta[property=\"og:image\"]",
+      "original_width": 1400,
+      "original_height": 630,
+      "score": 121,
+      "candidate_count": 7,
+      "fetched_pages": [
+        "https://himalayanecstasynepal.com/our-team",
+        "https://himalayanecstasynepal.com/team/sujan-bhattarai",
+        "https://himalayanecstasynepal.com/faqs",
+        "https://himalayanecstasynepal.com/team/amrit-kumar-magar",
+        "https://himalayanecstasynepal.com"
+      ]
+    }
+  ]
+}
