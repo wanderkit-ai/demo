@@ -4,12 +4,12 @@ import uuid
 import asyncio
 from datetime import datetime
 import anthropic
-from demo_content import DEMO_DEAL, DEMO_NEGOTIATION_MESSAGES, make_message
+from demo_content import DEMO_DEAL, DEMO_NEGOTIATION_MESSAGES, DEMO_OPERATOR_REQUIREMENTS_MESSAGE, DEMO_TRAVELER_REQUIREMENTS, make_message
 from tools.mock_data import get_operator_by_id
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-SYSTEM_PROMPT = """You are WanderKit's negotiation agent. You represent travel influencers in negotiations with local tour operators.
+SYSTEM_PROMPT = """You are Noma's negotiation agent. You represent travel influencers in negotiations with local tour operators.
 
 Your negotiation strategy:
 1. Open with a warm introduction, share the itinerary highlights, and ask for their best package price
@@ -87,6 +87,13 @@ async def run_negotiation(itinerary: dict, operator_id: str):
         deal["operator_name"] = operator["name"]
         deal["operator_id"] = operator_id
         yield f"data: {json.dumps({'type': 'deal_reached', 'deal': deal})}\n\n"
+        await asyncio.sleep(0.6)
+
+        req_msg = make_message("operator", DEMO_OPERATOR_REQUIREMENTS_MESSAGE)
+        yield f"data: {json.dumps({'type': 'message', 'message': req_msg})}\n\n"
+        await asyncio.sleep(0.3)
+        yield f"data: {json.dumps({'type': 'operator_requirements', 'requirements': DEMO_TRAVELER_REQUIREMENTS})}\n\n"
+
         yield f"data: {json.dumps({'type': 'done', 'deal': deal})}\n\n"
         return
 

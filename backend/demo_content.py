@@ -193,8 +193,43 @@ DEMO_DEAL = {
     "operator_id": "op_nepal_trek",
 }
 
+DEMO_OPERATOR_REQUIREMENTS_MESSAGE = (
+    "Before we confirm the booking, here is what we need from each traveler:\n\n"
+    "**Per traveler (both):**\n"
+    "• Passport copy — valid at least 6 months past departure\n"
+    "• Travel insurance certificate covering trekking and helicopter evacuation\n"
+    "• Medical fitness declaration (self-signed is fine for this grade)\n"
+    "• Emergency contact name and phone number\n"
+    "• Dietary preferences and any allergies\n\n"
+    "**Content creator add-ons:**\n"
+    "• Camera and drone equipment list for customs clearance\n"
+    "• Drone model and serial number — we handle the permit filing\n\n"
+    "Once we receive these, we will send the final booking confirmation within 48 hours."
+)
+
+DEMO_TRAVELER_REQUIREMENTS = {
+    "per_traveler": [
+        "Passport copy (valid 6+ months past departure)",
+        "Travel insurance certificate covering trekking + helicopter evacuation",
+        "Medical fitness declaration",
+        "Emergency contact name and phone number",
+        "Dietary preferences and any allergies",
+    ],
+    "content_creator": [
+        "Camera and drone equipment list for customs clearance",
+        "Drone model and serial number for permit filing",
+    ],
+}
+
 
 DEMO_CHECKLIST_ITEMS = [
+    ("Traveler Requirements", "Submit passport copy to Himalaya Quest (valid 6+ months past departure)", "6 weeks before", "Required from both travelers before booking is confirmed.", "high"),
+    ("Traveler Requirements", "Send travel insurance certificate covering trekking + helicopter evacuation", "6 weeks before", "Both travelers must provide this before operator confirms.", "high"),
+    ("Traveler Requirements", "Submit medical fitness declaration", "6 weeks before", "Self-signed declaration is accepted for this trek grade.", "high"),
+    ("Traveler Requirements", "Provide emergency contact name and phone for each traveler", "6 weeks before", "Stored by operator and guide throughout the trek.", "high"),
+    ("Traveler Requirements", "Share dietary preferences and any allergies", "4 weeks before", "Operator uses this to brief teahouse cooks on the route.", "medium"),
+    ("Traveler Requirements", "Send camera/drone equipment list for customs clearance", "4 weeks before", "Required by Himalaya Quest for content creator add-on.", "medium"),
+    ("Traveler Requirements", "Provide drone model and serial number for permit filing", "4 weeks before", "Operator handles the filing — just send the model details.", "medium"),
     ("Travel Documents", "Verify passport validity and Nepal visa requirements", "8 weeks before", "Passport should be valid for 6+ months after departure.", "high"),
     ("Travel Documents", "Save permits and operator emergency contacts offline", "2 weeks before", "Keep copies in phone files and cloud storage.", "high"),
     ("Flights & Transport", "Confirm Kathmandu arrival and Lukla weather buffer", "6 weeks before", "Morning flights are more reliable for mountain weather.", "high"),
@@ -227,7 +262,7 @@ def build_demo_checklist(itinerary_id: str) -> dict[str, Any]:
                 "id": f"demo-task-{idx + 1}",
                 "category": category,
                 "task": task,
-                "done": idx in {0, 2, 8},
+                "done": False,
                 "deadline": deadline,
                 "notes": notes,
                 "priority": priority,
@@ -247,6 +282,12 @@ def build_demo_negotiation(itinerary_id: str = "demo-nepal-luxury-creator-trek")
         }
         for idx, (sender, message) in enumerate(DEMO_NEGOTIATION_MESSAGES)
     ]
+    messages.append({
+        "id": "demo-neg-msg-req",
+        "sender": "operator",
+        "message": DEMO_OPERATOR_REQUIREMENTS_MESSAGE,
+        "timestamp": datetime.now().isoformat(),
+    })
     return {
         "id": "demo-negotiation-nepal",
         "itinerary_id": itinerary_id,

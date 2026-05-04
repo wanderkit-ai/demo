@@ -4,10 +4,11 @@ import { getItineraries, getNegotiations, getChecklist, generateChecklist, updat
 import {
   CheckSquare, Square, Loader2, Mail, ChevronDown, ChevronRight,
   AlertCircle, Plane, Hotel, Activity, Shield, Package, CreditCard,
-  Smartphone, Camera, FileText
+  Smartphone, Camera, FileText, ClipboardList
 } from 'lucide-react'
 
 const categoryIcons: Record<string, any> = {
+  'Traveler Requirements': ClipboardList,
   'Travel Documents': FileText,
   'Flights & Transport': Plane,
   'Accommodation': Hotel,
@@ -18,6 +19,19 @@ const categoryIcons: Record<string, any> = {
   'Communication': Smartphone,
   'Content Creation': Camera,
 }
+
+const categoryOrder = [
+  'Traveler Requirements',
+  'Travel Documents',
+  'Flights & Transport',
+  'Accommodation',
+  'Activities & Tours',
+  'Health & Safety',
+  'Packing',
+  'Money & Payments',
+  'Communication',
+  'Content Creation',
+]
 
 const priorityColors: Record<string, string> = {
   high: 'text-red-600',
@@ -182,19 +196,22 @@ export default function BookingsPage() {
       {/* Checklist grouped by category */}
       {checklist && (
         <div className="space-y-4 mb-8">
-          {Object.entries(grouped).map(([cat, items]) => {
+          {[...categoryOrder.filter(c => grouped[c]), ...Object.keys(grouped).filter(c => !categoryOrder.includes(c))].map(cat => {
+            const items = grouped[cat]
+            if (!items) return null
             const Icon = categoryIcons[cat] || CheckSquare
-            const catDone = items.filter(i => i.done).length
+            const catDone = items.filter((i: any) => i.done).length
             const isCollapsed = collapsed[cat]
+            const isTravelerReq = cat === 'Traveler Requirements'
 
             return (
-              <div key={cat} className="border border-notion-border rounded-xl overflow-hidden">
+              <div key={cat} className={`border rounded-xl overflow-hidden ${isTravelerReq ? 'border-blue-200' : 'border-notion-border'}`}>
                 <button
                   onClick={() => setCollapsed(prev => ({ ...prev, [cat]: !prev[cat] }))}
-                  className="w-full flex items-center gap-3 px-4 py-3 bg-notion-hover hover:bg-notion-border/50 transition-colors"
+                  className={`w-full flex items-center gap-3 px-4 py-3 transition-colors ${isTravelerReq ? 'bg-blue-50 hover:bg-blue-100' : 'bg-notion-hover hover:bg-notion-border/50'}`}
                 >
-                  <Icon className="w-4 h-4 text-brand-600 shrink-0" />
-                  <span className="font-medium text-sm text-notion-text flex-1 text-left">{cat}</span>
+                  <Icon className={`w-4 h-4 shrink-0 ${isTravelerReq ? 'text-blue-600' : 'text-brand-600'}`} />
+                  <span className={`font-medium text-sm flex-1 text-left ${isTravelerReq ? 'text-blue-800' : 'text-notion-text'}`}>{cat}</span>
                   <span className="text-xs text-notion-muted mr-2">{catDone}/{items.length}</span>
                   {isCollapsed
                     ? <ChevronRight className="w-4 h-4 text-notion-muted" />

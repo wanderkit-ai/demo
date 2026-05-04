@@ -12,7 +12,7 @@ from tools.mock_data import search_operators
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-SYSTEM_PROMPT = """You are WanderKit's AI travel assistant — a knowledgeable, enthusiastic companion for adventure travel influencers building their next iconic journey.
+SYSTEM_PROMPT = """You are Noma's AI travel assistant — a knowledgeable, enthusiastic companion for adventure travel influencers building their next iconic journey.
 
 Your role:
 1. Through conversational Q&A, gather everything you need: destination, duration, travel style, budget, number of travelers, must-have experiences, dietary needs, fitness level, and any constraints.

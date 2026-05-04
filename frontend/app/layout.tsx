@@ -4,7 +4,7 @@ import TopNav from '@/components/TopNav'
 import Sidebar from '@/components/Sidebar'
 
 export const metadata: Metadata = {
-  title: 'WanderKit — Hiking Operator Platform',
+  title: 'Noma — Hiking Operator Platform',
   description: 'Find, compare and book the world\'s best hiking operators',
 }
 

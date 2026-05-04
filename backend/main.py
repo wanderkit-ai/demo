@@ -21,7 +21,7 @@ from agents.negotiation_agent import run_negotiation
 from agents.checklist_agent import generate_checklist
 from demo_content import seed_demo_data
 
-app = FastAPI(title="WanderKit API")
+app = FastAPI(title="Noma API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -260,6 +260,6 @@ def send_email(req: EmailRequest):
     return {
         "success": True,
         "message": f"Confirmation email sent to {req.user_email}",
-        "subject": f"Your WanderKit Trip: {it.get('title', 'Amazing Journey')}",
+        "subject": f"Your Noma Trip: {it.get('title', 'Amazing Journey')}",
         "preview": f"Confirmed: {it.get('duration')} days in {it.get('destination')} — your adventure awaits!"
     }

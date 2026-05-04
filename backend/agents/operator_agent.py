@@ -5,7 +5,7 @@ from tools.mock_data import search_operators, get_operator_by_id
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-SYSTEM_PROMPT = """You are WanderKit's operator matching specialist.
+SYSTEM_PROMPT = """You are Noma's operator matching specialist.
 Given an itinerary, find and rank the best local operators from our network.
 
 For each operator:

@@ -6,7 +6,7 @@ from demo_content import DEMO_CHECKLIST_ITEMS
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-SYSTEM_PROMPT = """You are WanderKit's booking coordinator. Generate a comprehensive pre-trip checklist for a travel itinerary.
+SYSTEM_PROMPT = """You are Noma's booking coordinator. Generate a comprehensive pre-trip checklist for a travel itinerary.
 
 Organize items into categories:
 - Travel Documents (visas, passports, insurance)

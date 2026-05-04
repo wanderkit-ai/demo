@@ -1,10 +1,10 @@
 'use client'
 import { Suspense, useEffect, useState, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { getNegotiations, getOperators, getItineraries } from '@/lib/api'
+import { getNegotiations, getOperators, getItineraries, sendEmail } from '@/lib/api'
 import {
   MessageSquare, Send, Bot, User, CheckCircle2,
-  XCircle, Clock, DollarSign, Loader2, Plus, Sparkles
+  XCircle, Clock, DollarSign, Loader2, Plus, Sparkles, ClipboardList, Mail
 } from 'lucide-react'
 
 interface Message {
@@ -33,6 +33,20 @@ const statusConfig: Record<string, { label: string; color: string; icon: any }> 
   failed: { label: 'No Deal', color: 'text-red-600 bg-red-50', icon: XCircle },
 }
 
+const DEMO_TRAVELER_REQUIREMENTS = {
+  per_traveler: [
+    'Passport copy (valid 6+ months past departure)',
+    'Travel insurance certificate covering trekking + helicopter evacuation',
+    'Medical fitness declaration',
+    'Emergency contact name and phone number',
+    'Dietary preferences and any allergies',
+  ],
+  content_creator: [
+    'Camera and drone equipment list for customs clearance',
+    'Drone model and serial number for permit filing',
+  ],
+}
+
 function NegotiationsContent() {
   const searchParams = useSearchParams()
   const [negotiations, setNegotiations] = useState<Negotiation[]>([])
@@ -49,22 +63,28 @@ function NegotiationsContent() {
   const [liveMessages, setLiveMessages] = useState<Message[]>([])
   const [agentThinking, setAgentThinking] = useState('')
   const [dealReached, setDealReached] = useState<any>(null)
+  const [operatorRequirements, setOperatorRequirements] = useState<any>(null)
+  const [emailAddr, setEmailAddr] = useState('')
+  const [sendingEmail, setSendingEmail] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
 
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const opId = searchParams.get('operator')
+    const itId = searchParams.get('itinerary')
+
     Promise.all([getNegotiations(), getOperators(), getItineraries()])
       .then(([negs, ops, its]) => {
         setNegotiations(negs)
         setOperators(ops)
         setItineraries(its)
-        if (negs.length > 0) setSelected(negs[0])
+        // Only auto-select first negotiation when NOT coming from operator contact
+        if (negs.length > 0 && !opId) setSelected(negs[0])
         setLoading(false)
       })
 
-    // Pre-fill from URL params
-    const opId = searchParams.get('operator')
-    const itId = searchParams.get('itinerary')
+    // Pre-fill from URL params — opens fresh negotiation form
     if (opId) { setSelectedOperator(opId); setShowNew(true) }
     if (itId) setSelectedItinerary(itId)
   }, [])
@@ -79,6 +99,9 @@ function NegotiationsContent() {
     setLiveMessages([])
     setAgentThinking('')
     setDealReached(null)
+    setOperatorRequirements(null)
+    setEmailAddr('')
+    setEmailSent(false)
 
     const res = await fetch('/api/negotiations/start', {
       method: 'POST',
@@ -112,6 +135,8 @@ function NegotiationsContent() {
             setAgentThinking('')
           } else if (event.type === 'deal_reached') {
             setDealReached(event.deal)
+          } else if (event.type === 'operator_requirements') {
+            setOperatorRequirements(event.requirements)
           } else if (event.type === 'done') {
             setAgentThinking('')
             // Refresh negotiations list
@@ -155,7 +180,7 @@ function NegotiationsContent() {
             return (
               <button
                 key={neg.id}
-                onClick={() => { setSelected(neg); setShowNew(false) }}
+                onClick={() => { setSelected(neg); setShowNew(false); setEmailSent(false); setEmailAddr('') }}
                 className={`w-full text-left p-2.5 rounded-lg transition-colors ${
                   selected?.id === neg.id ? 'bg-white shadow-sm' : 'hover:bg-notion-hover'
                 }`}
@@ -297,7 +322,7 @@ function NegotiationsContent() {
                   </div>
                   <div className="max-w-[75%]">
                     <div className={`text-xs font-medium mb-1 ${msg.sender === 'agent' ? 'text-brand-600' : 'text-amber-600 text-right'}`}>
-                      {msg.sender === 'agent' ? 'WanderKit Agent' : selectedOp?.name || 'Operator'}
+                      {msg.sender === 'agent' ? 'Noma Agent' : selectedOp?.name || 'Operator'}
                     </div>
                     <div className={`rounded-xl px-4 py-3 text-sm leading-relaxed ${
                       msg.sender === 'agent'
@@ -344,6 +369,92 @@ function NegotiationsContent() {
                       </ul>
                     )}
                   </div>
+                </div>
+              )}
+
+              {/* Per-traveler requirements from operator */}
+              {(operatorRequirements || selected?.status === 'agreed') && (
+                <div className="rounded-xl border-2 border-blue-200 bg-blue-50 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <ClipboardList className="w-5 h-5 text-blue-600" />
+                    <span className="font-semibold text-blue-700">Required from Each Traveler</span>
+                  </div>
+                  {(() => {
+                    const reqs = operatorRequirements || DEMO_TRAVELER_REQUIREMENTS
+                    return (
+                  <div className="space-y-3">
+                    {reqs.per_traveler?.length > 0 && (
+                      <div>
+                        <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">Per traveler (both)</div>
+                        <ul className="space-y-1">
+                          {reqs.per_traveler.map((req: string, i: number) => (
+                            <li key={i} className="flex items-start gap-2 text-xs text-blue-800">
+                              <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+                              {req}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {reqs.content_creator?.length > 0 && (
+                      <div>
+                        <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">Content creator add-ons</div>
+                        <ul className="space-y-1">
+                          {reqs.content_creator.map((req: string, i: number) => (
+                            <li key={i} className="flex items-start gap-2 text-xs text-blue-800">
+                              <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+                              {req}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <p className="text-xs text-blue-600 italic mt-1">These requirements are added to your checklist automatically.</p>
+                  </div>
+                    )
+                  })()}
+                </div>
+              )}
+
+              {/* Email travelers after deal */}
+              {(dealReached || selected?.status === 'agreed') && (
+                <div className="rounded-xl border border-notion-border bg-white p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Mail className="w-4 h-4 text-brand-600" />
+                    <span className="font-semibold text-notion-text text-sm">Notify Travelers</span>
+                  </div>
+                  {emailSent ? (
+                    <div className="flex items-center gap-2 text-green-600 text-sm">
+                      <CheckCircle2 className="w-4 h-4" />
+                      Confirmation email sent to travelers!
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="email"
+                        value={emailAddr}
+                        onChange={e => setEmailAddr(e.target.value)}
+                        placeholder="traveler@email.com"
+                        className="flex-1 text-sm border border-notion-border rounded-lg px-3 py-2 focus:outline-none focus:border-brand-400"
+                      />
+                      <button
+                        onClick={async () => {
+                          if (!emailAddr) return
+                          setSendingEmail(true)
+                          const itId = selected?.itinerary_id || selectedItinerary
+                          const negId = selected?.id
+                          await sendEmail(emailAddr, itId, negId)
+                          setEmailSent(true)
+                          setSendingEmail(false)
+                        }}
+                        disabled={!emailAddr || sendingEmail}
+                        className="flex items-center gap-2 text-sm bg-brand-600 text-white px-3 py-2 rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 shrink-0"
+                      >
+                        {sendingEmail ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
+                        Send
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 

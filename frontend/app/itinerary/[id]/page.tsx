@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ItineraryBlock from '@/components/ItineraryBlock'
 import OperatorCard from '@/components/OperatorCard'
-import { getItinerary, matchOperators } from '@/lib/api'
+import { getItinerary, matchOperators, publishItinerary } from '@/lib/api'
 import {
   Globe, Clock, Users, DollarSign, ArrowLeft,
-  Sparkles, AlertCircle, Map
+  Sparkles, AlertCircle, Map, Send, Check
 } from 'lucide-react'
 
 const styleColors: Record<string, string> = {
@@ -23,6 +23,8 @@ export default function ItineraryPage({ params }: { params: { id: string } }) {
   const [operators, setOperators] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingOps, setLoadingOps] = useState(false)
+  const [publishing, setPublishing] = useState(false)
+  const [published, setPublished] = useState(false)
 
   useEffect(() => {
     getItinerary(params.id)
@@ -32,6 +34,15 @@ export default function ItineraryPage({ params }: { params: { id: string } }) {
       })
       .catch(() => setLoading(false))
   }, [params.id])
+
+  const handlePublish = async () => {
+    if (!itinerary || itinerary.status === 'published') return
+    setPublishing(true)
+    const updated = await publishItinerary(params.id)
+    setItinerary(updated)
+    setPublished(true)
+    setPublishing(false)
+  }
 
   const findOperators = async () => {
     if (!itinerary) return
@@ -78,9 +89,26 @@ export default function ItineraryPage({ params }: { params: { id: string } }) {
         <ArrowLeft className="w-4 h-4" /> Back
       </button>
 
-      {/* Status */}
-      <div className="text-xs text-brand-600 font-semibold uppercase tracking-wider mb-2">
-        {itinerary.status === 'published' ? '✓ Published' : '· Draft'}
+      {/* Status + Publish */}
+      <div className="flex items-center gap-3 mb-2">
+        <div className="text-xs text-brand-600 font-semibold uppercase tracking-wider">
+          {itinerary.status === 'published' ? '✓ Published' : '· Draft'}
+        </div>
+        {itinerary.status !== 'published' && !published && (
+          <button
+            onClick={handlePublish}
+            disabled={publishing}
+            className="flex items-center gap-1.5 text-xs bg-brand-600 text-white px-3 py-1 rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-60"
+          >
+            <Send className="w-3 h-3" />
+            {publishing ? 'Publishing...' : 'Publish'}
+          </button>
+        )}
+        {(published || itinerary.status === 'published') && (
+          <span className="flex items-center gap-1 text-xs text-green-600 font-medium">
+            <Check className="w-3.5 h-3.5" /> Live
+          </span>
+        )}
       </div>
 
       {/* Title */}

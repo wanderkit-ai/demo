@@ -39,7 +39,7 @@ export default function ChatPanel({
       initialized.current = true
       setMessages([{
         role: 'assistant',
-        content: "Hey! I'm your WanderKit AI assistant. Tell me where in the world you want to go and what kind of experience you're after. I'll build the itinerary, flag real operator constraints, and prepare it for negotiation."
+        content: "Hey! I'm your Noma AI assistant. Tell me where in the world you want to go and what kind of experience you're after. I'll build the itinerary, flag real operator constraints, and prepare it for negotiation."
       }])
     }
   }, [])

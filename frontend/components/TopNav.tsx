@@ -25,7 +25,7 @@ export default function TopNav() {
         <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
           <Globe className="w-4 h-4 text-white" strokeWidth={2} />
         </div>
-        <span className="font-bold text-warm-text tracking-tight text-base">WanderKit</span>
+        <span className="font-bold text-warm-text tracking-tight text-base">Noma</span>
       </Link>
 
       {/* Nav tabs — centered */}
