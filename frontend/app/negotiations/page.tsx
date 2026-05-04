@@ -1,7 +1,7 @@
 'use client'
 import { Suspense, useEffect, useState, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { getNegotiations, getOperators, getItineraries, sendEmail } from '@/lib/api'
+import { getNegotiations, getOperators, getItineraries, sendToTravelers } from '@/lib/api'
 import {
   MessageSquare, Send, Bot, User, CheckCircle2,
   XCircle, Clock, DollarSign, Loader2, Plus, Sparkles, ClipboardList, Mail
@@ -64,11 +64,11 @@ function NegotiationsContent() {
   const [agentThinking, setAgentThinking] = useState('')
   const [dealReached, setDealReached] = useState<any>(null)
   const [operatorRequirements, setOperatorRequirements] = useState<any>(null)
-  const [emailAddr, setEmailAddr] = useState('')
-  const [sendingEmail, setSendingEmail] = useState(false)
-  const [emailSent, setEmailSent] = useState(false)
+  const [notifyingTravelers, setNotifyingTravelers] = useState(false)
+  const [travelerNotifications, setTravelerNotifications] = useState<any[]>([])
 
   const bottomRef = useRef<HTMLDivElement>(null)
+  const notifiedNegotiations = useRef<Set<string>>(new Set())
 
   useEffect(() => {
     const opId = searchParams.get('operator')
@@ -100,8 +100,7 @@ function NegotiationsContent() {
     setAgentThinking('')
     setDealReached(null)
     setOperatorRequirements(null)
-    setEmailAddr('')
-    setEmailSent(false)
+    setTravelerNotifications([])
 
     const res = await fetch('/api/negotiations/start', {
       method: 'POST',
@@ -143,7 +142,10 @@ function NegotiationsContent() {
             getNegotiations().then(negs => {
               setNegotiations(negs)
               const newNeg = negs.find((n: any) => n.id === negId)
-              if (newNeg) setSelected(newNeg)
+              if (newNeg) {
+                setSelected(newNeg)
+                autoNotifyTravelers(newNeg.itinerary_id, newNeg.id)
+              }
             })
           }
         } catch {}
@@ -154,8 +156,35 @@ function NegotiationsContent() {
     setShowNew(false)
   }
 
+  const autoNotifyTravelers = async (itineraryId: string, negotiationId?: string) => {
+    if (!itineraryId) return
+    if (negotiationId && notifiedNegotiations.current.has(negotiationId)) return
+    setNotifyingTravelers(true)
+    try {
+      const result = await sendToTravelers(itineraryId)
+      setTravelerNotifications(result.results || [])
+      if (negotiationId) notifiedNegotiations.current.add(negotiationId)
+    } finally {
+      setNotifyingTravelers(false)
+    }
+  }
+
   const selectedOp = operators.find(o => o.id === (selected?.operator_id || selectedOperator))
   const displayMessages = selected ? selected.messages : liveMessages
+  const uniqueNegotiations = Object.values(
+    negotiations.reduce((acc, neg) => {
+      const key = `${neg.itinerary_id}:${neg.operator_id}`
+      const prev = acc[key]
+      if (!prev) {
+        acc[key] = neg
+        return acc
+      }
+      const prevTs = new Date(prev.created_at || 0).getTime()
+      const currTs = new Date(neg.created_at || 0).getTime()
+      if (currTs >= prevTs) acc[key] = neg
+      return acc
+    }, {} as Record<string, Negotiation>)
+  )
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -166,6 +195,7 @@ function NegotiationsContent() {
             <h2 className="font-semibold text-notion-text text-sm">Negotiations</h2>
             <button
               onClick={() => { setShowNew(true); setSelected(null) }}
+              aria-label="Start new negotiation"
               className="w-6 h-6 rounded flex items-center justify-center hover:bg-notion-border transition-colors text-notion-secondary"
             >
               <Plus className="w-4 h-4" />
@@ -174,13 +204,17 @@ function NegotiationsContent() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
-          {negotiations.map(neg => {
+          {uniqueNegotiations.map(neg => {
             const cfg = statusConfig[neg.status] || statusConfig.active
             const Icon = cfg.icon
             return (
               <button
                 key={neg.id}
-                onClick={() => { setSelected(neg); setShowNew(false); setEmailSent(false); setEmailAddr('') }}
+                onClick={() => {
+                  setSelected(neg)
+                  setShowNew(false)
+                  if (neg.status === 'agreed') autoNotifyTravelers(neg.itinerary_id, neg.id)
+                }}
                 className={`w-full text-left p-2.5 rounded-lg transition-colors ${
                   selected?.id === neg.id ? 'bg-white shadow-sm' : 'hover:bg-notion-hover'
                 }`}
@@ -227,6 +261,7 @@ function NegotiationsContent() {
                 <div>
                   <label className="block text-xs font-medium text-notion-secondary mb-1.5">Select Itinerary</label>
                   <select
+                    aria-label="Select itinerary"
                     value={selectedItinerary}
                     onChange={e => setSelectedItinerary(e.target.value)}
                     className="w-full text-sm border border-notion-border rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand-400"
@@ -241,6 +276,7 @@ function NegotiationsContent() {
                 <div>
                   <label className="block text-xs font-medium text-notion-secondary mb-1.5">Select Operator</label>
                   <select
+                    aria-label="Select operator"
                     value={selectedOperator}
                     onChange={e => setSelectedOperator(e.target.value)}
                     className="w-full text-sm border border-notion-border rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand-400"
@@ -423,36 +459,26 @@ function NegotiationsContent() {
                     <Mail className="w-4 h-4 text-brand-600" />
                     <span className="font-semibold text-notion-text text-sm">Notify Travelers</span>
                   </div>
-                  {emailSent ? (
-                    <div className="flex items-center gap-2 text-green-600 text-sm">
-                      <CheckCircle2 className="w-4 h-4" />
-                      Confirmation email sent to travelers!
+                  {notifyingTravelers ? (
+                    <div className="flex items-center gap-2 text-sm text-brand-700">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sending traveler notifications automatically...
+                    </div>
+                  ) : travelerNotifications.length > 0 ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-green-600 text-sm">
+                        <CheckCircle2 className="w-4 h-4" />
+                        {travelerNotifications.length} travelers notified automatically.
+                      </div>
+                      {travelerNotifications.map((r, i) => (
+                        <div key={i} className="text-xs text-notion-secondary bg-green-50 border border-green-100 rounded-lg px-3 py-2">
+                          <span className="font-medium text-notion-text">{r.name}</span> — {r.email}
+                        </div>
+                      ))}
                     </div>
                   ) : (
-                    <div className="flex gap-2">
-                      <input
-                        type="email"
-                        value={emailAddr}
-                        onChange={e => setEmailAddr(e.target.value)}
-                        placeholder="traveler@email.com"
-                        className="flex-1 text-sm border border-notion-border rounded-lg px-3 py-2 focus:outline-none focus:border-brand-400"
-                      />
-                      <button
-                        onClick={async () => {
-                          if (!emailAddr) return
-                          setSendingEmail(true)
-                          const itId = selected?.itinerary_id || selectedItinerary
-                          const negId = selected?.id
-                          await sendEmail(emailAddr, itId, negId)
-                          setEmailSent(true)
-                          setSendingEmail(false)
-                        }}
-                        disabled={!emailAddr || sendingEmail}
-                        className="flex items-center gap-2 text-sm bg-brand-600 text-white px-3 py-2 rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 shrink-0"
-                      >
-                        {sendingEmail ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
-                        Send
-                      </button>
+                    <div className="text-xs text-notion-muted">
+                      Notifications are sent automatically after deal agreement. No manual email entry is required.
                     </div>
                   )}
                 </div>

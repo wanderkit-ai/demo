@@ -7,7 +7,7 @@ OPERATORS = [
         "destinations": ["Nepal", "Everest Region", "Kathmandu", "Annapurna"],
         "styles": ["luxury", "comfort", "adventure", "trekking"],
         "hotel_rating": 4.5,
-        "price_per_day": 264,
+        "price_per_day": 348,
         "location": "Thamel / Amrit Marga, Kathmandu, Nepal",
         "verified": True,
         "featured": True,
@@ -97,10 +97,10 @@ OPERATORS = [
             },
         ],
         "negotiation_script": {
-            "opening": "Namaste! For the 7-day creator trek you've described, we'd offer $195/person/day — Kathmandu boutique hotel, deluxe teahouses, private guide, all permits, and helicopter return included.",
-            "counter_1": "For a confirmed group with social media reach, we can move to $155/day. We'll add a dedicated camera porter and lock in Pasang as your lead guide.",
-            "counter_2": "$120/day is our floor for a group of 3 with the full inclusion list. Helicopter return stays, all three personal packs covered.",
-            "accept": "Confirmed at $120/day — all inclusions locked. We'll send the personal briefs today. This is going to be a great trip!",
+            "opening": "Namaste! For the 7-day Everest creator route you've described, we quote $348/person/day — Kathmandu boutique hotel, deluxe teahouses, private guide, permits, and heli exit Day 6 blended into that average.",
+            "counter_1": "For a confirmed group with social reach, we can move to $328/day and add a dedicated camera porter plus Pasang as lead guide.",
+            "counter_2": "$308/day is our floor for this inclusion set at this group size — heli window firming by Day 5.",
+            "accept": "Confirmed at $308/day — all inclusions locked. We'll send the personal briefs today.",
         },
     },
 

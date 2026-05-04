@@ -117,7 +117,7 @@ async def stream_scripted_itinerary_chat(messages: list, current_itinerary: dict
     match_input = {
         "destination": "Nepal",
         "style": "adventure",
-        "budget_per_day": 300,
+        "budget_per_day": 380,
         "hotel_rating": 4.0,
     }
     operators = get_demo_operator_matches()

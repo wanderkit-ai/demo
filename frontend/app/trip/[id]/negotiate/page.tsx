@@ -29,6 +29,7 @@ export default function NegotiatePage() {
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const started = useRef(false)
+  const autoNotified = useRef(false)
 
   useEffect(() => {
     getTrip(id).then(setTrip)
@@ -41,6 +42,12 @@ export default function NegotiatePage() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, streaming, deal])
+
+  useEffect(() => {
+    if (!done || !deal || sendingEmails || emailResults.length > 0 || autoNotified.current) return
+    autoNotified.current = true
+    handleSendEmails()
+  }, [done, deal, sendingEmails, emailResults.length])
 
   const startNegotiation = async () => {
     setStreaming(true)
@@ -95,6 +102,7 @@ export default function NegotiatePage() {
       <div className="bg-[#075E54] text-white px-4 py-3 flex items-center gap-3 shrink-0 shadow-md">
         <button
           onClick={() => router.push(`/trip/${id}/manage`)}
+          aria-label="Back to trip management"
           className="text-white/70 hover:text-white transition-colors mr-1"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -199,23 +207,16 @@ export default function NegotiatePage() {
                 ))}
               </ul>
 
-              {/* Send to travelers */}
-              {emailResults.length === 0 ? (
-                <button
-                  onClick={handleSendEmails}
-                  disabled={sendingEmails}
-                  className="w-full flex items-center justify-center gap-2 bg-[#075E54] hover:bg-[#064d45] text-white font-semibold py-2.5 rounded-xl transition-colors disabled:opacity-60 text-sm"
-                >
-                  {sendingEmails
-                    ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
-                    : <><Send className="w-4 h-4" /> Send to All Travellers</>
-                  }
-                </button>
-              ) : (
+              {/* Auto notify travelers */}
+              {sendingEmails ? (
+                <div className="w-full flex items-center justify-center gap-2 bg-[#075E54] text-white font-semibold py-2.5 rounded-xl text-sm">
+                  <Loader2 className="w-4 h-4 animate-spin" /> Auto-sending to all travellers...
+                </div>
+              ) : emailResults.length > 0 ? (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-green-700 text-sm font-medium mb-2">
                     <Mail className="w-4 h-4" />
-                    {emailResults.length} travellers notified
+                    {emailResults.length} travellers auto-notified
                   </div>
                   {emailResults.map((r, i) => (
                     <div key={i} className="flex items-center gap-2 text-xs text-stone-600 bg-green-50 rounded-lg px-3 py-2">
@@ -229,6 +230,10 @@ export default function NegotiatePage() {
                       <Check className="w-3.5 h-3.5 text-green-600 shrink-0" />
                     </div>
                   ))}
+                </div>
+              ) : (
+                <div className="w-full flex items-center justify-center gap-2 bg-stone-100 text-stone-500 font-medium py-2.5 rounded-xl text-sm">
+                  <Send className="w-4 h-4" /> Notifications will send automatically
                 </div>
               )}
             </div>

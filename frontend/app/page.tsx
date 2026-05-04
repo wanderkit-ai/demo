@@ -42,10 +42,9 @@ export default function Dashboard() {
       <div className="mb-8 rounded-xl border border-brand-200 bg-white p-5 shadow-card">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="font-semibold text-warm-text mb-1">Final demo flow</h2>
+            <h2 className="font-semibold text-warm-text mb-1">Start the demo</h2>
             <p className="text-sm text-warm-secondary max-w-2xl">
-              Create a Nepal influencer itinerary, show the 4-star hotel constraint, match Himalaya Quest,
-              publish the brief, negotiate from $150/day to $120/day, generate the checklist, then send confirmation.
+              Click <span className="font-medium text-warm-text">Start demo</span> — the demo brief is pre-filled in the itinerary chat.
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -164,9 +163,9 @@ export default function Dashboard() {
             <h2 className="font-semibold text-warm-text text-sm mb-3">Top Operators</h2>
             <div className="space-y-2">
               {[
-                { name: 'Himalaya Quest', rating: 4.9, location: 'Nepal' },
-                { name: 'Wild Patagonia', rating: 4.8, location: 'Chile' },
-                { name: 'Inca Trail Specialists', rating: 4.9, location: 'Peru' },
+                { name: 'Access Nepal Tours & Trekking', rating: 4.9, location: 'Thamel, Kathmandu' },
+                { name: 'Hiking Nepal', rating: 4.8, location: 'Thamel, Kathmandu' },
+                { name: 'Nepal Vision Treks', rating: 4.8, location: 'Thamel, Kathmandu' },
               ].map(op => (
                 <Link
                   key={op.name}

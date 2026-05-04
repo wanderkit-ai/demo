@@ -21,11 +21,6 @@ interface ChatPanelProps {
   onOperatorSuggestion?: (operators: any[]) => void
 }
 
-const demoPrompts = [
-  'Plan a 7-day luxury adventure trek in Nepal for a travel influencer with 250K followers. We want strong content moments, local culture, and operator support.',
-  'I want boutique 4-star hotels if possible, but be honest if the mountains can only support 3.5-star or premium teahouses.',
-]
-
 export default function ChatPanel({
   itineraryId,
   currentItinerary,
@@ -46,7 +41,7 @@ export default function ChatPanel({
       initialized.current = true
       setMessages([{
         role: 'assistant',
-        content: "Hey! I'm your Noma AI assistant. Tell me where in the world you want to go and what kind of experience you're after. I'll build the itinerary, flag real operator constraints, and prepare it for negotiation."
+        content: "I’m your Noma planning agent. Share your destination, budget range, travel style, and non-negotiables, and I’ll build a practical itinerary, flag real local constraints, and prepare a negotiation-ready operator brief."
       }])
     }
   }, [])
@@ -102,8 +97,8 @@ export default function ChatPanel({
               setStreamingText(accumulated)
             } else if (event.type === 'tool_use') {
               const toolLabels: Record<string, string> = {
-                update_itinerary: 'Building your itinerary...',
-                find_matching_operator: 'Searching for operators...',
+                update_itinerary: 'Designing day-by-day route with realistic pacing...',
+                find_matching_operator: 'Scoring local operators against your constraints...',
               }
               setToolActivity(toolLabels[event.name] || `Using ${event.name}...`)
             } else if (event.type === 'tool_result') {
@@ -160,24 +155,6 @@ export default function ChatPanel({
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        {messages.length === 1 && (
-          <div className="rounded-xl border border-brand-200 bg-brand-50 p-3 space-y-2">
-            <div className="text-xs font-semibold text-brand-700">Demo brief</div>
-            {demoPrompts.map(prompt => (
-              <button
-                key={prompt}
-                onClick={() => {
-                  setInput(prompt)
-                  inputRef.current?.focus()
-                }}
-                className="w-full text-left text-xs leading-relaxed rounded-lg bg-white border border-brand-100 px-3 py-2 text-notion-secondary hover:border-brand-300 hover:text-notion-text transition-colors"
-              >
-                {prompt}
-              </button>
-            ))}
-          </div>
-        )}
-
         {messages.map((msg, i) => (
           <div key={i} className={`flex gap-2.5 message-bubble ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
             <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
@@ -269,6 +246,7 @@ export default function ChatPanel({
           />
           <button
             onClick={send}
+            aria-label="Send message"
             disabled={!input.trim() || loading}
             className="w-7 h-7 rounded-lg bg-brand-600 flex items-center justify-center disabled:opacity-40 hover:bg-brand-700 transition-colors shrink-0"
           >

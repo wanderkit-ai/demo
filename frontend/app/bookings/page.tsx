@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { getItineraries, getNegotiations, getChecklist, generateChecklist, updateChecklistItem, sendEmail } from '@/lib/api'
+import { getItineraries, getNegotiations, getChecklist, generateChecklist, updateChecklistItem } from '@/lib/api'
 import {
   CheckSquare, Square, Loader2, Mail, ChevronDown, ChevronRight,
   AlertCircle, Plane, Hotel, Activity, Shield, Package, CreditCard,
@@ -46,9 +46,6 @@ export default function BookingsPage() {
   const [checklist, setChecklist] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [generating, setGenerating] = useState(false)
-  const [emailSent, setEmailSent] = useState(false)
-  const [emailAddr, setEmailAddr] = useState('')
-  const [sendingEmail, setSendingEmail] = useState(false)
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
@@ -88,15 +85,6 @@ export default function BookingsPage() {
     setChecklist(updated)
   }
 
-  const handleSendEmail = async () => {
-    if (!emailAddr || !selectedIt) return
-    setSendingEmail(true)
-    const agreedNeg = negotiations.find(n => n.itinerary_id === selectedIt && n.status === 'agreed')
-    await sendEmail(emailAddr, selectedIt, agreedNeg?.id)
-    setEmailSent(true)
-    setSendingEmail(false)
-  }
-
   // Group items by category
   const grouped: Record<string, any[]> = {}
   if (checklist?.items) {
@@ -123,6 +111,7 @@ export default function BookingsPage() {
       {/* Itinerary selector */}
       <div className="flex items-center gap-3 mb-6">
         <select
+          aria-label="Select itinerary"
           value={selectedIt}
           onChange={e => setSelectedIt(e.target.value)}
           className="text-sm border border-notion-border rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand-400 flex-1"
@@ -261,37 +250,23 @@ export default function BookingsPage() {
         </div>
       )}
 
-      {/* Email confirmation */}
+      {/* Traveler notifications */}
       {checklist && (
         <div className="border border-notion-border rounded-xl p-5">
           <h3 className="font-semibold text-notion-text mb-3 flex items-center gap-2">
             <Mail className="w-4 h-4 text-brand-600" />
-            Send Confirmation Email
+            Traveler Notifications
           </h3>
-          {emailSent ? (
-            <div className="flex items-center gap-2 text-green-600 text-sm">
-              <CheckSquare className="w-4 h-4" />
-              Email sent successfully!
+          <div className="flex items-start gap-2 text-sm text-notion-secondary">
+            <CheckSquare className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+            <div>
+              <div className="font-medium text-notion-text">Notifications are automatic</div>
+              <div className="text-xs mt-0.5">
+                Traveler emails are sent automatically from the trip negotiation flow after a deal is agreed.
+                No manual email entry is required.
+              </div>
             </div>
-          ) : (
-            <div className="flex gap-2">
-              <input
-                type="email"
-                value={emailAddr}
-                onChange={e => setEmailAddr(e.target.value)}
-                placeholder="traveler@email.com"
-                className="flex-1 text-sm border border-notion-border rounded-lg px-3 py-2 focus:outline-none focus:border-brand-400"
-              />
-              <button
-                onClick={handleSendEmail}
-                disabled={!emailAddr || sendingEmail}
-                className="flex items-center gap-2 text-sm bg-brand-600 text-white px-3 py-2 rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 shrink-0"
-              >
-                {sendingEmail ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
-                Send
-              </button>
-            </div>
-          )}
+          </div>
         </div>
       )}
     </div>

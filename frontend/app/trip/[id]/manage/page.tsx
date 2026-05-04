@@ -94,6 +94,11 @@ export default function ManageTripPage() {
   }
 
   const itinerary = trip?.itinerary
+  const selectedOperatorEvent = [...analysisEvents].reverse().find(ev => ev.type === 'operator_selected')
+  const selectedOperatorId = selectedOperatorEvent?.operator_id || trip?.analysis?.operator_id
+  const selectedOperator = selectedOperatorId
+    ? operators.find(op => op.id === selectedOperatorId)
+    : null
 
   return (
     <div className="max-w-3xl mx-auto px-8 py-10">
@@ -262,25 +267,25 @@ export default function ManageTripPage() {
           <div ref={bottomRef} />
         </section>
 
-        {/* ── Operators ── */}
+        {/* ── Best Operator ── */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Mountain className="w-4 h-4 text-brand-600" />
-              <h2 className="font-semibold text-notion-text">All Operators</h2>
-              <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-medium">{operators.length}</span>
+              <h2 className="font-semibold text-notion-text">Best Operator</h2>
             </div>
           </div>
 
-          <div className="space-y-4">
-            {operators.map(op => (
-              <OperatorCard
-                key={op.id}
-                operator={op}
-                onContact={() => router.push(`/negotiations?operator=${op.id}&itinerary=${id}`)}
-              />
-            ))}
-          </div>
+          {!selectedOperator ? (
+            <div className="border-2 border-dashed border-notion-border rounded-xl p-6 text-center text-notion-muted text-sm">
+              Run analysis to select the single best operator for this group.
+            </div>
+          ) : (
+            <OperatorCard
+              operator={selectedOperator}
+              onContact={() => router.push(`/negotiations?operator=${selectedOperator.id}&itinerary=${id}`)}
+            />
+          )}
         </section>
       </div>
     </div>

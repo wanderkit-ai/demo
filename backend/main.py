@@ -149,7 +149,18 @@ def match_operators_route(req: OperatorMatchRequest):
 
 @app.get("/api/negotiations")
 def list_negotiations():
-    return list(store.negotiations.values())
+    deduped = {}
+    for neg in store.negotiations.values():
+        key = f"{neg.get('itinerary_id')}::{neg.get('operator_id')}"
+        prev = deduped.get(key)
+        if not prev:
+            deduped[key] = neg
+            continue
+        prev_ts = prev.get("created_at", "")
+        curr_ts = neg.get("created_at", "")
+        if curr_ts >= prev_ts:
+            deduped[key] = neg
+    return list(deduped.values())
 
 @app.get("/api/negotiations/{negotiation_id}")
 def get_negotiation(negotiation_id: str):
@@ -167,20 +178,40 @@ async def start_negotiation(req: NegotiateRequest):
     if not op:
         raise HTTPException(404, "Operator not found")
 
-    neg_id = str(uuid.uuid4())
-    neg = {
+    existing_neg = next(
+        (
+            n for n in store.negotiations.values()
+            if n.get("itinerary_id") == req.itinerary_id and n.get("operator_id") == req.operator_id
+        ),
+        None
+    )
+
+    neg_id = existing_neg["id"] if existing_neg else str(uuid.uuid4())
+    neg = existing_neg or {
         "id": neg_id,
         "itinerary_id": req.itinerary_id,
         "operator_id": req.operator_id,
         "operator_name": op["name"],
+        "created_at": datetime.now().isoformat()
+    }
+    neg.update({
         "status": "active",
         "messages": [],
         "original_price": op["price_per_day"],
         "final_price": None,
         "deal_terms": None,
-        "created_at": datetime.now().isoformat()
-    }
+    })
     store.save_negotiation(neg)
+
+    # Hard-enforce one negotiation per itinerary+operator pair in memory
+    duplicate_ids = [
+        n_id for n_id, n in store.negotiations.items()
+        if n_id != neg_id
+        and n.get("itinerary_id") == req.itinerary_id
+        and n.get("operator_id") == req.operator_id
+    ]
+    for dup_id in duplicate_ids:
+        store.negotiations.pop(dup_id, None)
 
     async def generate():
         deal = None
@@ -372,6 +403,8 @@ async def trip_negotiate(itinerary_id: str):
     signups = store.get_trip_signups(itinerary_id)
     analysis = store.get_trip_analysis(itinerary_id)
     operator_id = analysis.get("operator_id", "op_nepal_trek") if analysis else "op_nepal_trek"
+    operator = get_operator_by_id(operator_id)
+    original_price = operator.get("price_per_day", 348) if operator else 348
 
     async def generate():
         all_messages = []
@@ -393,7 +426,7 @@ async def trip_negotiate(itinerary_id: str):
             "operator_name": deal.get("operator_name", "Operator") if deal else "Operator",
             "status": "agreed" if deal else "active",
             "messages": all_messages,
-            "original_price": 195,
+            "original_price": original_price,
             "final_price": deal.get("price_per_day") if deal else None,
             "deal_terms": deal.get("summary") if deal else None,
             "deal": deal,
@@ -430,7 +463,7 @@ def send_to_travelers(itinerary_id: str):
                 "name": signup["name"],
                 "email": signup["email"],
                 "subject": f"Your Nepal Trek is Confirmed, {signup['name'].split()[0]}",
-                "preview": f"Your 7-day Nepal trek is confirmed at ${deal.get('price_per_day', 115)}/day.",
+                "preview": f"Your 7-day Nepal trek is confirmed at operator land rate ${deal.get('price_per_day', 308)}/day (retail per trip budget).",
                 "personalized_note": "Full itinerary and operator brief attached.",
                 "sent": True,
             })
